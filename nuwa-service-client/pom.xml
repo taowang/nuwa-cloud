@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>nuwa-cloud</artifactId>
+        <groupId>com.study</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>nuwa-service-client</artifactId>
+    <name>${project.artifactId}</name>
+    <packaging>pom</packaging>
+    <modules>
+        <module>nuwa-service-system-client</module>
+    </modules>
+
+    <dependencies>
+        <!-- nuwa Spring Boot自定义及扩展 -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-boot</artifactId>
+        </dependency>
+        <!-- nuwa Spring Cloud自定义及扩展 -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-cloud</artifactId>
+        </dependency>
+        <!-- nuwa swagger2-knife4j -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-swagger</artifactId>
+        </dependency>
+    </dependencies>
+</project>

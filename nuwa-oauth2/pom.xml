@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>nuwa-cloud</artifactId>
+        <groupId>com.study</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>nuwa-oauth2</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>nuwa-oauth2-password</module>
+    </modules>
+
+    <dependencies>
+        <!-- nuwa-platform-boot -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-boot</artifactId>
+            <version>${nuwa.project.version}</version>
+        </dependency>
+        <!-- nuwa-platform-cloud -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-cloud</artifactId>
+            <version>${nuwa.project.version}</version>
+        </dependency>
+        <!-- nuwa-platform-oauth2 -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-oauth2</artifactId>
+            <version>${nuwa.project.version}</version>
+        </dependency>
+        <!-- nuwa数据库驱动及连接池 -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-db</artifactId>
+        </dependency>
+        <!-- nuwa mybatis-plus -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-mybatis</artifactId>
+        </dependency>
+        <!-- nuwa-service-system 的fegin公共调用方法 -->
+        <dependency>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-service-system-api</artifactId>
+            <version>${nuwa.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!--thymeleaf-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
