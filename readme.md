@@ -43,8 +43,4 @@ openssl pkcs12 -in C:\Users\xxxx\Desktop\jarsigner\self-signed-certificate\serve
 http://localhost:8080/oauth/authorize?client_id=myjszl&redirect_uri=http://www.baidu.com&response_type=code&scope=all
 
 # nuwa-cloud
-# nuwa-cloud
-# nuwa-cloud
-# nuwa-cloud
-# nuwa-cloud
-# nuwa-cloud
+# 第一次提交
