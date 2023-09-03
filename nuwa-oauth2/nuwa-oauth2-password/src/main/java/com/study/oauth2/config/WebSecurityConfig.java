@@ -21,18 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-            "/resources/**",
-            "/static/**",
-            "/css/**",
-            "/ajax/**",
-            "/fonts/**",
-            "/img/**",
-            "/js/**",
-            "/login/**",
-            "/webjars/**",
-            "/error/**",
-            "/oauth/check_token",
-            "/favicon.ico"
+
     };
 
     private static final String[] INTERFACE_RESOURCE_LOCATIONS = {
