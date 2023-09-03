@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
@@ -90,13 +91,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         tokenEnhancers.add(tokenEnhancer());
         // 配置JwtAccessToken转换器
         tokenEnhancers.add(jwtAccessTokenConverter());
-        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers); //配置JWT的内容增强器
-        endpoints.authenticationManager(authenticationManager)
+        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers); // 配置JWT的内容增强器
+        endpoints.authenticationManager(authenticationManager) // 开启密码验证，由 WebSecurityConfigurerAdapter
                 .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(tokenEnhancerChain)
                 .userDetailsService(userDetailsService) //配置加载用户信息的服务
+                // 令牌管理服务，无论哪种模式都需要
                 .tokenServices(createDefaultTokenServices(endpoints))
-                .authorizationCodeServices(authorizationCodeServices()) //加入对授权码模式的支持
+                // 授权码模式所需要的authorizationCodeServices
+                .authorizationCodeServices(authorizationCodeServices())
                 /**
                  *
                  * refresh_token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
@@ -104,12 +107,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                  * 2.非重复使用：access_token过期刷新时， refresh_token过期时间延续，在refresh_token有效期内刷新而无需失效再次登录
                  */
                 .reuseRefreshTokens(false)
+                // 自定义授权跳转
+                //.pathMapping("/oauth/confirm_access", "自定义的url")
+                // 自定义异常跳转
+                //.pathMapping("/oauth/error", "自定义的url")
                 //自定义异常返回消息
                 .exceptionTranslator(nuwaOAuth2ExceptionTranslator)
-                // 自定义授权跳转
-                .pathMapping("/oauth/confirm_access", "/custom/confirm_access")
-                // 自定义异常跳转
-                .pathMapping("/oauth/error", "/view/oauth/error");
+                .allowedTokenEndpointRequestMethods(HttpMethod.POST);
 
     }
 
@@ -129,11 +133,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 // 开启/oauth/token_key 验证端口-无权限
                 .tokenKeyAccess("permitAll()")
                 // 开启/oauth/check_token 验证端口-需权限
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("permitAll()");
     }
 
     /**
-     * 将client信息存储在数据库中
+     * 将client信息存储在数据库中,存储client信息
+     *
      * @return
      */
     @Bean
@@ -156,6 +161,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     /**
      * 对token进行持久化存储在数据库中，数据存储在oauth_access_token和oauth_refresh_token
+     *
      * @return
      */
     @Bean
@@ -220,7 +226,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     * 加入对授权码模式的支持
+     * 授权码模式，加入对授权码模式的支持
+     *
      * @return
      */
     @Bean

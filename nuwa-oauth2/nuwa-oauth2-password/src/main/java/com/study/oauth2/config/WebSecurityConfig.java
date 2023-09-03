@@ -1,11 +1,9 @@
 package com.study.oauth2.config;
 
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -33,9 +31,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/login/**",
             "/webjars/**",
             "/error/**",
-            "/favicon.ico",
-            "/oauth/check_token"
+            "/oauth/check_token",
+            "/favicon.ico"
     };
+
+    private static final String[] INTERFACE_RESOURCE_LOCATIONS = {
+            "/oauth/login",
+            "/oauth/token",
+            "/oauth/public_key",
+            "/oauth/genPassWord",
+            "/oauth/logout",
+            "/form/login"
+    };
+
 
     /**
      * 放行静态资源
@@ -47,32 +55,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        // todo 允许表单登录
+        http
+                .authorizeRequests().antMatchers(INTERFACE_RESOURCE_LOCATIONS).permitAll()
+                .anyRequest().authenticated();
         http
                 .formLogin()
-                // 自定义处理登录逻辑的地址login
-                .loginProcessingUrl("/login")
-                // 自定义登录页面
-                .loginPage("/base-login.html")
-                .permitAll()
-                .and()
-                .requestMatchers().antMatchers("/rsa/publicKey", "/oauth/authorize", "/login/**", "/logout/**", "/view/**")
-                .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/**").authenticated()
-                .antMatchers(
-                        "/xxx/**").permitAll()//一些需要放开的URL
-                .anyRequest().authenticated()
-                .and().headers().frameOptions().disable();
-
-        //http.csrf().disable();
-        //http
-        //        .requestMatchers().antMatchers("/oauth/**","/login/**","/logout/**")
-        //        .and()
-        //        .authorizeRequests()
-        //        .antMatchers("/oauth/**").authenticated()
-        //        .and()
-        //        .formLogin().permitAll(); //新增login form支持用户登录及授权
+                // 处理登录逻辑的url
+                .loginProcessingUrl("/form/login")
+                // form表单登录页面
+                .loginPage("/oauth/login");
+        http.csrf().disable();
     }
 
     @Bean

@@ -7,14 +7,18 @@ import com.study.oauth2.util.JwtUtils;
 import com.study.platform.base.constant.AuthConstant;
 import com.study.platform.base.constant.NuwaConstant;
 import com.study.platform.base.result.Result;
+import io.swagger.annotations.ApiOperation;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.KeyPair;
@@ -39,6 +43,28 @@ public class AuthController {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+
+    /**
+     * 授权码模式-跳转接口
+     *
+     * @param model
+     * @return
+     */
+    @ApiOperation(value = "表单登录跳转页面")
+    @GetMapping("/login")
+    public ModelAndView loginPage(Model model) {
+        //返回跳转页面
+        ModelAndView loginModel = new ModelAndView("oauth-login");
+        return loginModel;
+    }
+
+    @ApiOperation(value = "处理授权异常的跳转页面")
+    @GetMapping("/error")
+    public ModelAndView error(Model model){
+        ModelAndView errorModel = new ModelAndView("oauth-error");
+        return errorModel;
+    }
 
     /**
      * Oauth2登录认证
@@ -89,7 +115,7 @@ public class AuthController {
         tokenArray[NuwaConstant.Number.ONE] = refreshToken;
         for (int i = NuwaConstant.Number.ZERO; i < tokenArray.length; i++) {
             String realToken = tokenArray[i];
-            if (StringUtils.isEmpty(realToken)){
+            if (StringUtils.isEmpty(realToken)) {
                 continue;
             }
             JSONObject jsonObject = JwtUtils.decodeJwt(realToken);
