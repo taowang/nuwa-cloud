@@ -16,7 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * @author Gitegg
+ * 作为资源服务的配置类必须满足两个条件
+ *  1.标注注解 @EnableResourceServer
+ *  2.继承 ResourceServerConfigurerAdapter
  */
 @Configuration
 @AllArgsConstructor

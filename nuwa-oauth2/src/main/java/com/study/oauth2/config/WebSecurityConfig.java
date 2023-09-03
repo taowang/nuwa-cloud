@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/oauth/public_key",
             "/oauth/genPassWord",
             "/oauth/logout",
-            "/form/login"
+            "/form/login",
+            "/oauth/check_token"
     };
 
 

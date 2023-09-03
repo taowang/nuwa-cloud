@@ -40,7 +40,7 @@ openssl pkcs12 -in C:\Users\xxxx\Desktop\jarsigner\self-signed-certificate\serve
 // 其中Enter Import Password：876543210
 
 
-http://localhost:8080/oauth/authorize?client_id=myjszl&redirect_uri=http://www.baidu.com&response_type=code&scope=all
-
+http://localhost/nuwa-oauth2/oauth/authorize?client_id=client-app&redirect_uri=http://www.baidu.com&response_type=code&scope=all
+http://localhost:12011/oauth/authorize?client_id=client-app&redirect_uri=http://www.baidu.com&response_type=code&scope=all
 # nuwa-cloud
 # 第一次提交

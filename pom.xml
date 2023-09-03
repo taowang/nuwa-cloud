@@ -10,14 +10,12 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>nuwa-common</module>
-        <module>nuwa-oauth</module>
         <module>nuwa-gateway</module>
         <module>nuwa-plugin</module>
         <module>nuwa-service</module>
         <module>nuwa-service-api</module>
         <module>nuwa-service-client</module>
         <module>nuwa-oauth2</module>
-        <module>nuwa-oauth-service</module>
     </modules>
 
     <properties>

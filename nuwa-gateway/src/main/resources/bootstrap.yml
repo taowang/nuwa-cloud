@@ -71,9 +71,10 @@ oauth-list:
     - "/nuwa-oauth2/oauth/genPassWord"
     - "/nuwa-service-system/account/register"
     - "/nuwa-service-system/account/register/check"
-    - "/nuwa-oauth2-code/*"
     - "/nuwa-oauth2/oauth/authorize"
-    - "/nuwa-oauth2/login"
+    - "/nuwa-oauth2/oauth/login"
+    - "/nuwa-oauth2/form/login"
+    - "/nuwa-oauth2/oauth/check_token"
 
   authUrls:
     - "/nuwa-service-system/user/currentUser"
@@ -81,4 +82,3 @@ oauth-list:
     - "/nuwa-oauth2/oauth/logout"
     - "/nuwa-oauth2-code/*"
     - "/nuwa-oauth2/oauth/authorize"
-# http://localhost/nuwa-oauth2/oauth/authorize?response_type=code&client_id=client-app&redirect_uri=www.baidu.com&scope=all

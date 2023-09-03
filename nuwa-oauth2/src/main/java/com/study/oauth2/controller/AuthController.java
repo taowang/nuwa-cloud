@@ -12,7 +12,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.AuthorizationRequest;
+import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -44,6 +44,9 @@ public class AuthController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private CheckTokenEndpoint checkTokenEndpoint;
+
 
     /**
      * 授权码模式-跳转接口
@@ -61,7 +64,7 @@ public class AuthController {
 
     @ApiOperation(value = "处理授权异常的跳转页面")
     @GetMapping("/error")
-    public ModelAndView error(Model model){
+    public ModelAndView error(Model model) {
         ModelAndView errorModel = new ModelAndView("oauth-error");
         return errorModel;
     }
@@ -74,10 +77,19 @@ public class AuthController {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
                 .token(oAuth2AccessToken.getValue())
-                .refreshToken(oAuth2AccessToken.getRefreshToken().getValue())
+                .refreshToken(oAuth2AccessToken.getRefreshToken() == null ? "" : oAuth2AccessToken.getRefreshToken().getValue())
                 .expiresIn(oAuth2AccessToken.getExpiresIn())
                 .tokenHead("Bearer ").build();
         return Result.data(oauth2TokenDto);
+    }
+
+    /**
+     * 重写/oauth/check_token这个默认接口，用于校验令牌，返回的数据格式统一
+     */
+    @PostMapping(value = "/check_token")
+    public Result<Map<String, ?>> checkToken(@RequestParam("token") String token) {
+        Map<String, ?> map = checkTokenEndpoint.checkToken(token);
+        return Result.data(map);
     }
 
     @GetMapping("/public_key")
