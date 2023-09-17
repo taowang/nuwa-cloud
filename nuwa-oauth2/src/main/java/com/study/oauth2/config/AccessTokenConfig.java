@@ -21,8 +21,11 @@ public class AccessTokenConfig {
 
     /**
      * 令牌存储策略
-     * 对token进行持久化存储在数据库中，数据存储在oauth_access_token和oauth_refresh_token
      *
+     * 对token进行持久化存储在数据库中，数据存储在oauth_access_token和oauth_refresh_token
+     * JwtTokenStore
+     * RedisTokenStore：将令牌存储到Redis中，此种方式相对于内存方式来说性能更好
+     * JdbcTokenStore：将令牌存储到数据库中，需要新建从对应的表
      * @return
      */
     @Bean
@@ -33,10 +36,12 @@ public class AccessTokenConfig {
 
     /**
      * 使用非对称加密算法对token签名
+     * JwtAccessTokenConverter: 令牌增强类，用户jwt令牌和OAuth身份进行转换
      */
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        // 设置秘钥
         converter.setKeyPair(keyPair());
         return converter;
     }

@@ -1,6 +1,7 @@
 package com.study.oauth2.config;
 
 import cn.hutool.core.util.ArrayUtil;
+import com.study.oauth2.exception.NuwaOAuth2ExceptionTranslator;
 import com.study.platform.oauth2.props.AuthUrlWhiteListProperties;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -10,6 +11,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,8 +20,8 @@ import java.util.List;
 
 /**
  * 作为资源服务的配置类必须满足两个条件
- *  1.标注注解 @EnableResourceServer
- *  2.继承 ResourceServerConfigurerAdapter
+ * 1.标注注解 @EnableResourceServer: 该注解标记这是一个资源服务
+ * 2.继承 ResourceServerConfigurerAdapter
  */
 @Configuration
 @AllArgsConstructor
@@ -70,6 +73,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();
+    }
+
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) {
+        OAuth2AuthenticationEntryPoint authenticationEntryPoint = new OAuth2AuthenticationEntryPoint();
+        authenticationEntryPoint.setExceptionTranslator(new NuwaOAuth2ExceptionTranslator());
+        resources.authenticationEntryPoint(authenticationEntryPoint);
     }
 
 }

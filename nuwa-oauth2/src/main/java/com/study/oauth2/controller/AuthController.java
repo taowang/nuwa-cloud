@@ -3,17 +3,25 @@ package com.study.oauth2.controller;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.study.oauth2.domain.Oauth2TokenDto;
+import com.study.oauth2.exception.NuwaOAuth2ExceptionTranslator;
 import com.study.oauth2.util.JwtUtils;
 import com.study.platform.base.constant.AuthConstant;
 import com.study.platform.base.constant.NuwaConstant;
 import com.study.platform.base.result.Result;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.BadClientCredentialsException;
+import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
+import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -31,8 +39,9 @@ import java.util.concurrent.TimeUnit;
  * 自定义Oauth2获取令牌接口
  * Created by macro on 2020/7/17.
  */
-@RestController
+@Controller
 @RequestMapping("/oauth")
+@Slf4j
 public class AuthController {
 
     @Autowired
@@ -47,6 +56,10 @@ public class AuthController {
     @Autowired
     private CheckTokenEndpoint checkTokenEndpoint;
 
+    //自定义异常翻译器，针对用户名、密码异常，授权类型不支持的异常进行处理
+    @Autowired
+    private NuwaOAuth2ExceptionTranslator translate;
+
 
     /**
      * 授权码模式-跳转接口
@@ -56,23 +69,22 @@ public class AuthController {
      */
     @ApiOperation(value = "表单登录跳转页面")
     @GetMapping("/login")
-    public ModelAndView loginPage(Model model) {
+    public String loginPage(Model model) {
         //返回跳转页面
-        ModelAndView loginModel = new ModelAndView("oauth-login");
-        return loginModel;
+        return "oauth-login";
     }
 
     @ApiOperation(value = "处理授权异常的跳转页面")
     @GetMapping("/error")
-    public ModelAndView error(Model model) {
-        ModelAndView errorModel = new ModelAndView("oauth-error");
-        return errorModel;
+    public String error(Model model) {
+        return "oauth-error";
     }
 
     /**
      * Oauth2登录认证
      */
     @RequestMapping(value = "/token", method = RequestMethod.POST)
+    @ResponseBody
     public Result<Oauth2TokenDto> postAccessToken(Principal principal, @RequestParam Map<String, String> parameters) throws HttpRequestMethodNotSupportedException {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, parameters).getBody();
         Oauth2TokenDto oauth2TokenDto = Oauth2TokenDto.builder()
@@ -87,12 +99,14 @@ public class AuthController {
      * 重写/oauth/check_token这个默认接口，用于校验令牌，返回的数据格式统一
      */
     @PostMapping(value = "/check_token")
+    @ResponseBody
     public Result<Map<String, ?>> checkToken(@RequestParam("token") String token) {
         Map<String, ?> map = checkTokenEndpoint.checkToken(token);
         return Result.data(map);
     }
 
     @GetMapping("/public_key")
+    @ResponseBody
     public Map<String, Object> getKey() {
         RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
         RSAKey key = new RSAKey.Builder(publicKey).build();
@@ -101,6 +115,7 @@ public class AuthController {
 
     //生成密码
     @GetMapping("/genPassWord")
+    @ResponseBody
     public Result<String> genPassWord() {
         return Result.success("genPassWord");
     }
@@ -115,6 +130,7 @@ public class AuthController {
      * @return
      */
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ResponseBody
     public Result logout(HttpServletRequest request) {
 
         String token = request.getHeader(AuthConstant.JWT_TOKEN_HEADER);
