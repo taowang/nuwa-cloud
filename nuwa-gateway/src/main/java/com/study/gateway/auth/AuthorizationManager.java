@@ -19,6 +19,7 @@ import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -40,6 +41,7 @@ import java.util.Map;
 public class AuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
     private final RedisTemplate redisTemplate;
+
     private final AuthUrlWhiteListProperties authUrlWhiteListProperties;
 
     @Override
@@ -71,7 +73,6 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             if (!org.springframework.util.StringUtils.isEmpty(blackListToken)) {
                 return Mono.error(new InvalidTokenException("无效的token！"));
             }
-
         } catch (ParseException e) {
             log.error("获取token黑名单时发生错误：{}", e);
         }

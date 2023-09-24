@@ -8,13 +8,13 @@ import com.study.platform.base.enums.ResultCode;
 import com.study.platform.base.result.Result;
 import com.study.service.system.api.feign.IUserFeign;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,10 +28,12 @@ import java.util.List;
 
 /**
  * 实现SpringSecurity获取用户信息接口
- *  从数据库中根据用户名查询用户的详细信息，包括权限
- *  数据库设计：角色、用户、权限、角色<->权限、用户<->角色，总共五张表，遵循RBAC设计
+ * 从数据库中根据用户名查询用户的详细信息，包括权限
+ * 数据库设计：角色、用户、权限、角色<->权限、用户<->角色，总共五张表，遵循RBAC设计
+ *
  * @author nuwa
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class NuwaUserDetailsServiceImpl implements UserDetailsService {
@@ -45,11 +47,12 @@ public class NuwaUserDetailsServiceImpl implements UserDetailsService {
     private int maxNonCaptchaTimes;
 
     private final IUserFeign userFeign;
+
     private final RedisTemplate redisTemplate;
 
     @Override
     public NuwaUserDetails loadUserByUsername(String username) {
-
+        log.info("begin loadUserByUsername, username=[{}]", username);
         // 远程调用返回数据
         Result<Object> result = userFeign.queryUserByAccount(username);
         if (result == null || !result.isSuccess()) {

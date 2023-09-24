@@ -28,15 +28,14 @@ import java.util.function.Consumer;
  */
 @Slf4j
 @Component
-public class AuthGlobalFilter implements GlobalFilter, Ordered {
-
-    private static Logger LOGGER = LoggerFactory.getLogger(AuthGlobalFilter.class);
-
+public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+        String requestUrl = exchange.getRequest().getPath().value();
 
         String tenantId = exchange.getRequest().getHeaders().getFirst(AuthConstant.TENANT_ID);
+        //2、 检查token是否存在
         String token = exchange.getRequest().getHeaders().getFirst(AuthConstant.JWT_TOKEN_HEADER);
         if (StrUtil.isEmpty(tenantId) && StrUtil.isEmpty(token)) {
             return chain.filter(exchange);

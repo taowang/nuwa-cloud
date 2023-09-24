@@ -1,25 +1,16 @@
 package com.study.oauth2.config;
 
-import com.study.oauth2.exception.NuwaClientCredentialsTokenEndpointFilter;
+import com.study.oauth2.filter.NuwaClientCredentialsTokenEndpointFilter;
 import com.study.oauth2.exception.NuwaOAuth2ExceptionTranslator;
 import com.study.oauth2.exception.NuwaOAuthServerAuthenticationEntryPoint;
 import com.study.oauth2.service.NuwaClientDetailsServiceImpl;
-import com.study.oauth2.service.NuwaUserDetails;
-import com.study.oauth2.token.NuwaTokenServices;
 import com.study.platform.base.constant.AuthConstant;
-import com.study.platform.base.constant.TokenConstant;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -28,15 +19,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenEnhancer;
-import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
 
 import javax.sql.DataSource;
-import java.util.*;
 
 /**
  * @ClassName: AuthorizationServerConfig OAuth2.0授权服务的配置类
@@ -59,14 +47,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      * 认证管理器
      */
     private final AuthenticationManager authenticationManager;
-    /**
-     * 自定义用户身份认证
-     */
-    private final UserDetailsService userDetailsService;
-
-    private final NuwaOAuth2ExceptionTranslator nuwaOAuth2ExceptionTranslator;
-
-    private final RedisTemplate redisTemplate;
 
     private final JwtAccessTokenConverter jwtAccessTokenConverter;
 
@@ -96,52 +76,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
-        tokenEnhancers.add(tokenEnhancer());
-        // 配置JwtAccessToken转换器
-        tokenEnhancers.add(jwtAccessTokenConverter);
-        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers); // 配置JWT的内容增强器
+
         endpoints
-                // 密码模式所需要的authenticationManager
-                .authenticationManager(authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter)
-                .tokenEnhancer(tokenEnhancerChain)
-                // 配置加载用户信息的服务
-                .userDetailsService(userDetailsService)
-                // 令牌管理服务，无论哪种模式都需要
-                .tokenServices(createDefaultTokenServices(endpoints))
+                //设置异常WebResponseExceptionTranslator，用于处理用户名，密码错误、授权类型不正确的异常、自定义异常返回消息
+                .exceptionTranslator(new NuwaOAuth2ExceptionTranslator())
                 // 授权码模式所需要的authorizationCodeServices
                 .authorizationCodeServices(authorizationCodeServices())
+                // 密码模式所需要的authenticationManager
+                .authenticationManager(authenticationManager)
+                // 令牌管理服务，无论哪种模式都需要
+                .tokenServices(tokenServices())
+                //授权页面的url替换
+//                .pathMapping("/oauth/confirm_access","自定义的url")
+                //异常页面的url替换
+//                .pathMapping("/oauth/error","自定义的url")
                 .reuseRefreshTokens(false)
-                // 设置WebResponseExceptionTranslator，自定义异常返回消息
-                .exceptionTranslator(nuwaOAuth2ExceptionTranslator)
                 // 只允许post提交访问令牌，url: /oauth/token
                 .allowedTokenEndpointRequestMethods(HttpMethod.POST);
 
     }
-
-    /**
-     * 令牌访问端点的配置，目前配置四个
-     * 配置了授权码模式所需要的服务， AuthorizationCodeServices
-     * 配置了密码模式所需要的 AuthenticationManager
-     * 配置了令牌管理服务， AuthorizationServerTokenServices
-     * 配置 /oauth/token 申请令牌的uri只允许POST提交。
-     * @param endpoints
-     * @throws Exception
-     */
-    //@Override
-    //public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    //    endpoints
-    //            // 授权码模式所需要的authorizationCodeServices
-    //            .authorizationCodeServices(authorizationCodeServices())
-    //            // 密码模式所需要的authenticationManager
-    //            .authenticationManager(authenticationManager)
-    //            // 令牌管理服务，无论那种模式都需要
-    //            .tokenServices(tokenServices())
-    //            // 只允许post提交访问令牌，url: /oauth/token
-    //            .allowedTokenEndpointRequestMethods(HttpMethod.POST);
-    //}
 
     /**
      * 令牌端点安全约束配置，比如/oauth/token 对哪些开放
@@ -181,96 +134,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     /**
-     *
-     */
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return (accessToken, authentication) -> {
-            Map<String, Object> map = new HashMap<>(2);
-            NuwaUserDetails user = (NuwaUserDetails) authentication.getUserAuthentication().getPrincipal();
-            map.put(TokenConstant.TENANT_ID, user.getTenantId());
-            map.put(TokenConstant.OAUTH_ID, user.getOauthId());
-            map.put(TokenConstant.USER_ID, user.getId());
-            map.put(TokenConstant.ORGANIZATION_ID, user.getOrganizationId());
-            map.put(TokenConstant.ORGANIZATION_NAME, user.getOrganizationName());
-            map.put(TokenConstant.ORGANIZATION_IDS, user.getOrganizationIds());
-            map.put(TokenConstant.ORGANIZATION_NAMES, user.getOrganizationNames());
-            map.put(TokenConstant.ROLE_ID, user.getRoleId());
-            map.put(TokenConstant.ROLE_NAME, user.getRoleName());
-            map.put(TokenConstant.ROLE_IDS, user.getRoleIds());
-            map.put(TokenConstant.ROLE_NAMES, user.getRoleNames());
-            map.put(TokenConstant.ACCOUNT, user.getAccount());
-            map.put(TokenConstant.REAL_NAME, user.getRealName());
-            map.put(TokenConstant.NICK_NAME, user.getNickname());
-            map.put(TokenConstant.ROLE_ID_LIST, user.getRoleIdList());
-            map.put(TokenConstant.ROLE_KEY_LIST, user.getRoleKeyList());
-            map.put(TokenConstant.ORGANIZATION_ID_LIST, user.getOrganizationIdList());
-            map.put(TokenConstant.AVATAR, user.getAvatar());
-            map.put(TokenConstant.DATA_PERMISSION_TYPE_LIST, user.getDataPermissionTypeList());
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
-            return accessToken;
-        };
-    }
-
-    /**
-     * 令牌管理服务配置
-     *
-     * @param endpoints
-     * @return
-     */
-    @Primary
-    @Bean
-    public DefaultTokenServices createDefaultTokenServices(AuthorizationServerEndpointsConfigurer endpoints) {
-        NuwaTokenServices tokenServices = new NuwaTokenServices(redisTemplate);
-        // 令牌服务
-        tokenServices.setTokenStore(tokenStore);
-        // 支持刷新token
-        tokenServices.setSupportRefreshToken(true);
-        // 是否重复使用RefreshToken
-        tokenServices.setReuseRefreshToken(false);
-        // 客户端配置策略
-        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
-        // access_token的过期时间
-        tokenServices.setAccessTokenValiditySeconds(60 * 60 * 2);
-        // refresh_token的过期时间
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 24 * 3);
-        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
-        addUserDetailsService(tokenServices, this.userDetailsService);
-        return tokenServices;
-    }
-
-    /**
      * 令牌管理服务的配置
      * 用来创建、获取、刷新令牌
      *
      * @return
      */
-    //@Bean
-    //public AuthorizationServerTokenServices tokenServices() {
-    //    DefaultTokenServices services = new DefaultTokenServices();
-    //    // 客户端配置策略
-    //    services.setClientDetailsService(jdbcClientDetailsService());
-    //    // 支持令牌刷新
-    //    services.setSupportRefreshToken(true);
-    //    // 令牌服务
-    //    services.setTokenStore(tokenStore);
-    //    // access_token的过期时间
-    //    services.setAccessTokenValiditySeconds(60 * 60 * 2);
-    //    // refresh_token的过期时间
-    //    services.setRefreshTokenValiditySeconds(60 * 60 * 24 * 3);
-    //
-    //    // 设置令牌增强, 使用jwtAccessTokenConverter进行转换
-    //    services.setTokenEnhancer(jwtAccessTokenConverter);
-    //    return services;
-    //}
-    private void addUserDetailsService(DefaultTokenServices tokenServices, UserDetailsService userDetailsService) {
-        if (userDetailsService != null) {
-            PreAuthenticatedAuthenticationProvider provider = new PreAuthenticatedAuthenticationProvider();
-            provider.setPreAuthenticatedUserDetailsService(new UserDetailsByNameServiceWrapper<>(
-                    userDetailsService));
-            tokenServices
-                    .setAuthenticationManager(new ProviderManager(Arrays.asList(provider)));
-        }
+    @Bean
+    public AuthorizationServerTokenServices tokenServices() {
+        DefaultTokenServices services = new DefaultTokenServices();
+        // 客户端配置策略
+        services.setClientDetailsService(jdbcClientDetailsService());
+        // 支持令牌刷新
+        services.setSupportRefreshToken(true);
+        // 令牌服务
+        services.setTokenStore(tokenStore);
+        // access_token的过期时间
+        services.setAccessTokenValiditySeconds(60 * 60 * 2);
+        // refresh_token的过期时间
+        services.setRefreshTokenValiditySeconds(60 * 60 * 24 * 3);
+        // 设置令牌增强, 使用jwtAccessTokenConverter进行转换
+        services.setTokenEnhancer(jwtAccessTokenConverter);
+        return services;
     }
 
     /**

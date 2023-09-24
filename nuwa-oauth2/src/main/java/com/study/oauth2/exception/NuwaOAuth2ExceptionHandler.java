@@ -17,24 +17,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class NuwaOAuth2ExceptionHandler {
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public Result handleBadCredentialsException(BadCredentialsException e) {
-        return Result.error(ResultCode.CLIENT_AUTHENTICATION_FAILED);
-    }
-
-    @ExceptionHandler(BadClientCredentialsException.class)
-    public Result handleClientAuthenticationException(BadClientCredentialsException e) {
-        return Result.error(ResultCode.CLIENT_AUTHENTICATION_FAILED);
-    }
-
-    @ExceptionHandler(UnauthorizedClientException.class)
-    public Result handleUnauthorizedClientException(UnauthorizedClientException e) {
-        return Result.error(ResultCode.CLIENT_AUTHENTICATION_FAILED);
-    }
-
-    @ExceptionHandler(ClientAuthenticationException.class)
-    public Result handleClientAuthenticationException(ClientAuthenticationException e) {
-        return Result.error(ResultCode.CLIENT_AUTHENTICATION_FAILED);
+    @ExceptionHandler(InvalidScopeException.class)
+    public Result handleInvalidScopeException(InvalidScopeException e) {
+        return Result.error(ResultCode.INVALID_SCOPE);
     }
 
     @ExceptionHandler(UnsupportedGrantTypeException.class)

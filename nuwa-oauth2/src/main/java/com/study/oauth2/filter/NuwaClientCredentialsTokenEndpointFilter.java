@@ -1,4 +1,4 @@
-package com.study.oauth2.exception;
+package com.study.oauth2.filter;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;

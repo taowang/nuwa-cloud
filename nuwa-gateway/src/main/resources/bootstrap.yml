@@ -77,7 +77,6 @@ oauth-list:
     - "/nuwa-oauth2/oauth/check_token"
 
   authUrls:
-    - "/nuwa-service-system/user/currentUser"
     - "/nuwa-oauth2/oauth/public_key"
     - "/nuwa-oauth2/oauth/logout"
     - "/nuwa-oauth2-code/*"

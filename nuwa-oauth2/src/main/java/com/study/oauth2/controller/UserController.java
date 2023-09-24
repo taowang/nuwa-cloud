@@ -1,6 +1,7 @@
 package com.study.oauth2.controller;
 
 import com.study.platform.base.result.Result;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +20,10 @@ public class UserController {
     @GetMapping("/genPassWord")
     public Result<String> genPassWord() {
         return Result.success("genPassWord");
+    }
+
+    @GetMapping("/getCurrentUser")
+    public Object getCurrentUser(Authentication authentication) {
+        return authentication.getPrincipal();
     }
 }
