@@ -17,7 +17,7 @@ swagger:
   enabled: true
   groupName: nuwa-service-system
   basePackage: com.study.service.system
-  pathMapping: nuwa-system
+  pathMapping: nuwa-service-system
 
 logging:
   level:

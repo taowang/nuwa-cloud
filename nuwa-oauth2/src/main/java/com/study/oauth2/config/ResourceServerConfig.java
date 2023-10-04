@@ -51,7 +51,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) {
 
         List<String> whiteUrlList = new ArrayList<>();
-        //获取不需要鉴权的白名单配置，因为Gateway需要配置服务名，这里需要将服务名去掉/gitegg-oauth
+        //获取不需要鉴权的白名单配置，因为Gateway需要配置服务名，这里需要将服务名去掉/nuwa-oauth
         Arrays.stream(ArrayUtil.toArray(authUrlWhiteListProperties.getWhiteUrls(), String.class)).forEach(whiteUrl -> {
             try {
                 if (whiteUrl.indexOf("/", 2) != -1) {
@@ -68,8 +68,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .and()
                 .authorizeRequests()
-                .antMatchers(ArrayUtil.toArray(whiteUrlList, String.class))
-                .permitAll()
+                .antMatchers(ArrayUtil.toArray(whiteUrlList, String.class)).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable();

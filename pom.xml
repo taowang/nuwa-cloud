@@ -29,7 +29,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- 项目统一字符集编码UTF-8 -->
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <!-- nuwa项目统一设置版本号 -->
         <nuwa.project.version>1.0-SNAPSHOT</nuwa.project.version>
         <!-- SpringBoot版本号 -->
@@ -38,7 +37,6 @@
         <spring.cloud.version>Hoxton.SR8</spring.cloud.version>
         <!-- SpringPlatform版本号 -->
         <spring.platform.version>Cairo-SR8</spring.platform.version>
-
         <!-- mysql数据库驱动 -->
         <mysql.connector.version>8.0.17</mysql.connector.version>
         <!-- 数据库连接池Druid -->

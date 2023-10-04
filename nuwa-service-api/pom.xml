@@ -25,12 +25,12 @@
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-boot</artifactId>
         </dependency>
-        <!-- gitegg Spring Cloud自定义及扩展 -->
+        <!-- nuwa Spring Cloud自定义及扩展 -->
         <dependency>
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-cloud</artifactId>
         </dependency>
-        <!-- gitegg swagger2-knife4j -->
+        <!-- nuwa swagger2-knife4j -->
         <dependency>
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-swagger</artifactId>

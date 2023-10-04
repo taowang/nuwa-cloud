@@ -15,11 +15,10 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- gitegg-service-system 的fegin公共调用方法 -->
+        <!-- nuwa-service-system 的fegin公共调用方法 -->
         <dependency>
             <groupId>com.study</groupId>
             <artifactId>nuwa-service-system-api</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

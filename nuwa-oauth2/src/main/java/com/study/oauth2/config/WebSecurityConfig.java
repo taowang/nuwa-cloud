@@ -1,5 +1,6 @@
 package com.study.oauth2.config;
 
+import cn.hutool.core.util.StrUtil;
 import com.study.oauth2.service.NuwaUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
-
     };
 
     private static final String[] INTERFACE_RESOURCE_LOCATIONS = {
@@ -48,6 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
+        if (CLASSPATH_RESOURCE_LOCATIONS == null || CLASSPATH_RESOURCE_LOCATIONS.length == 0) {
+            return;
+        }
         web.ignoring().antMatchers(CLASSPATH_RESOURCE_LOCATIONS);
     }
 

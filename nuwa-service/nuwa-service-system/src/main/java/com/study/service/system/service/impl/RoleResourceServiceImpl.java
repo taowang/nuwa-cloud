@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @author gitegg
+ * @author wtt
  */
 @Slf4j
 @Service
@@ -50,7 +50,7 @@ public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, Rol
     }
 
     /**
-     * 执行角色权限初始化
+     * 执行角色权限初始化，在项目启动之初直接读取数据库中的权限加载到Redis中
      */
     @Override
     public void initResourceRoles() {

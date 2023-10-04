@@ -3,6 +3,7 @@ package com.study.gateway.filter;
 import com.study.platform.base.constant.AuthConstant;
 import com.study.platform.oauth2.props.AuthUrlWhiteListProperties;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -18,6 +19,7 @@ import java.util.List;
 /**
  * 白名单路径访问时需要移除JWT请求头
  */
+@Slf4j
 @AllArgsConstructor
 @Component
 public class WhiteListRemoveJwtFilter implements WebFilter {
@@ -28,7 +30,8 @@ public class WhiteListRemoveJwtFilter implements WebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         URI uri = request.getURI();
-        System.err.println(uri);
+        String path = request.getURI().getPath();
+        log.info("url=[{}], path=[{}]", uri, path);
         PathMatcher pathMatcher = new AntPathMatcher();
         //白名单路径移除JWT请求头
         List<String> ignoreUrls = authUrlWhiteListProperties.getWhiteUrls();

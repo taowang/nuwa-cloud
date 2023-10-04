@@ -17,4 +17,4 @@ swagger:
   enabled: true
   groupName: nuwa-service-base
   basePackage: com.study.service.base
-  pathMapping: nuwa-base
+  pathMapping: nuwa-service-base

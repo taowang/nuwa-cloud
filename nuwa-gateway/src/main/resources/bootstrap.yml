@@ -21,14 +21,14 @@ spring:
         - id: nuwa-service-system
           uri: lb://nuwa-service-system
           predicates:
-            - Path=/nuwa-system/**
+            - Path=/nuwa-service-system/**
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
         - id: nuwa-service-base
           uri: lb://nuwa-service-base
           predicates:
-            - Path=/nuwa-base/**
+            - Path=/nuwa-service-base/**
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
@@ -37,14 +37,6 @@ spring:
           predicates:
             - Path=/nuwa-oauth2/**
           filters:
-            - SwaggerHeaderFilter
-            - StripPrefix=1
-        - id: nuwa-oauth2-code
-          uri: lb://nuwa-oauth2-code
-          predicates:
-            - Path=/nuwa-oauth2-code/**
-          filters:
-            - SwaggerHeaderFilter
             - StripPrefix=1
       x-forwarded:
         enabled: false
@@ -62,6 +54,11 @@ spring:
     port: 6379
     host: 127.0.0.1
     password: 810905
+swagger:
+  enabled: false
+  groupName: nuwa-service-gateway
+  basePackage: com.study.gateway
+  pathMapping: nuwa-service-gateway
 
 oauth-list:
   whiteUrls:
@@ -75,6 +72,11 @@ oauth-list:
     - "/nuwa-oauth2/oauth/login"
     - "/nuwa-oauth2/form/login"
     - "/nuwa-oauth2/oauth/check_token"
+    - "/webjars/**"
+    - "/doc.html"
+    - "/swagger-resources/**"
+    - "/nuwa-service-base/v2/api-docs"
+    - "/nuwa-service-system/v2/api-docs"
 
   authUrls:
     - "/nuwa-oauth2/oauth/public_key"

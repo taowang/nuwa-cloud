@@ -1,9 +1,8 @@
 package com.study.service.system.client.fegin;
 
 
-
-import com.study.service.system.client.dto.UserAddDTO;
 import com.study.platform.base.result.Result;
+import com.study.service.system.client.dto.UserAddDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
