@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 网关鉴权管理器
+ * 网关鉴权管理器，用于自定义权限校验
  */
 @Slf4j
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -46,12 +46,14 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
+        // 匹配url
+        PathMatcher pathMatcher = new AntPathMatcher();
         ServerHttpRequest request = authorizationContext.getExchange().getRequest();
         String path = request.getURI().getPath();
-        PathMatcher pathMatcher = new AntPathMatcher();
-
+        // 获取请求方法，POST、GET
+        HttpMethod method = request.getMethod();
         // 对应跨域的预检请求直接放行
-        if (request.getMethod() == HttpMethod.OPTIONS) {
+        if (method == HttpMethod.OPTIONS) {
             return Mono.just(new AuthorizationDecision(true));
         }
 
@@ -61,7 +63,6 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             return Mono.just(new AuthorizationDecision(false));
         }
 
-
         //如果token被加入到黑名单，就是执行了退出登录操作，那么拒绝访问
         String realToken = token.replace(AuthConstant.JWT_TOKEN_PREFIX, "");
         try {
@@ -69,7 +70,7 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
             Payload payload = jwsObject.getPayload();
             JSONObject jsonObject = payload.toJSONObject();
             String jti = jsonObject.getAsString(TokenConstant.JTI);
-            String blackListToken = (String)redisTemplate.opsForValue().get(AuthConstant.TOKEN_BLACKLIST + jti);
+            String blackListToken = (String) redisTemplate.opsForValue().get(AuthConstant.TOKEN_BLACKLIST + jti);
             if (!org.springframework.util.StringUtils.isEmpty(blackListToken)) {
                 return Mono.error(new InvalidTokenException("无效的token！"));
             }
