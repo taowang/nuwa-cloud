@@ -1,4 +1,4 @@
-package com.study.service.system.api.dto;
+package com.study.service.system.client.dto;
 
 import lombok.Data;
 

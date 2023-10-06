@@ -15,13 +15,11 @@
         <dependency>
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-boot</artifactId>
-            <version>${nuwa.project.version}</version>
         </dependency>
         <!-- nuwa-platform-cloud -->
         <dependency>
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-cloud</artifactId>
-            <version>${nuwa.project.version}</version>
         </dependency>
         <!-- nuwa-platform-oauth2 -->
         <dependency>
@@ -41,7 +39,8 @@
         <!-- nuwa-service-system 的fegin公共调用方法 -->
         <dependency>
             <groupId>com.study</groupId>
-            <artifactId>nuwa-service-system-api</artifactId>
+            <artifactId>nuwa-service-system-client</artifactId>
+            <version>${nuwa.project.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>

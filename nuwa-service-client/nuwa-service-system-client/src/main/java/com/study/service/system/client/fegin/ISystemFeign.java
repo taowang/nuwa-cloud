@@ -1,15 +1,15 @@
-
-package com.study.service.system.api.feign;
+package com.study.service.system.client.fegin;
 
 import com.study.platform.base.result.Result;
-import com.study.service.system.api.dto.ApiSystemDTO;
+import com.study.service.system.client.dto.ApiSystemDTO;
+import com.study.service.system.client.fegin.fallback.SystemApiFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "nuwa-service-system")
+@FeignClient(value = "nuwa-service-system", contextId = "SystemClient", fallback = SystemApiFeignFallback.class)
 public interface ISystemFeign {
 
     /**

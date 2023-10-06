@@ -1,85 +1,16 @@
-server:
-  port: 80
-
 spring:
+  profiles:
+    active: dev
   application:
     name: nuwa-service-gateway
-  resources:
-    add-mappings: true
   cloud:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-    gateway:
-      discovery:
-        locator:
-          # enabled：默认为false，设置为true表明spring cloud gateway开启服务发现和路由的功能，网关自动根据注册中心的服务名为每个服务创建一个router，将以服务名开头的请求路径转发到对应的服务
-          enabled: true
-          # lowerCaseServiceId：启动 locator.enabled=true 自动路由时，路由的路径默认会使用大写ID，若想要使用小写ID，可将lowerCaseServiceId设置为true
-          lower-case-service-id: true
-      routes:
-        - id: nuwa-service-system
-          uri: lb://nuwa-service-system
-          predicates:
-            - Path=/nuwa-service-system/**
-          filters:
-            - SwaggerHeaderFilter
-            - StripPrefix=1
-        - id: nuwa-service-base
-          uri: lb://nuwa-service-base
-          predicates:
-            - Path=/nuwa-service-base/**
-          filters:
-            - SwaggerHeaderFilter
-            - StripPrefix=1
-        - id: nuwa-oauth2
-          uri: lb://nuwa-oauth2
-          predicates:
-            - Path=/nuwa-oauth2/**
-          filters:
-            - StripPrefix=1
-      x-forwarded:
-        enabled: false
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: 'http://127.0.0.1/nuwa-oauth2/oauth/public_key' #配置RSA的公钥访问地址
-      client:
-        user-authorization-uri: http://localhost:8088/oauth/authorize
-        scope: read,write
-        pre-established-redirect-uri: http://www.baidu.com
-  redis:
-    database: 1
-    port: 6379
-    host: 127.0.0.1
-    password: 810905
-swagger:
-  enabled: false
-  groupName: nuwa-service-gateway
-  basePackage: com.study.gateway
-  pathMapping: nuwa-service-gateway
-
-oauth-list:
-  whiteUrls:
-    - "/nuwa-oauth2/oauth/token"
-    - "/nuwa-oauth2/oauth/authorize"
-    - "/nuwa-oauth2/oauth/public_key"
-    - "/nuwa-oauth2/oauth/genPassWord"
-    - "/nuwa-service-system/account/register"
-    - "/nuwa-service-system/account/register/check"
-    - "/nuwa-oauth2/oauth/authorize"
-    - "/nuwa-oauth2/oauth/login"
-    - "/nuwa-oauth2/form/login"
-    - "/nuwa-oauth2/oauth/check_token"
-    - "/webjars/**"
-    - "/doc.html"
-    - "/swagger-resources/**"
-    - "/nuwa-service-base/v2/api-docs"
-    - "/nuwa-service-system/v2/api-docs"
-
-  authUrls:
-    - "/nuwa-oauth2/oauth/public_key"
-    - "/nuwa-oauth2/oauth/logout"
-    - "/nuwa-oauth2-code/*"
-    - "/nuwa-oauth2/oauth/authorize"
+      config:
+        server-addr: 127.0.0.1:8848
+        namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
+        group: GATEWAY_GROUP
+        file-extension: yaml
+        prefix: nuwa-service-gateway
+        enabled: true

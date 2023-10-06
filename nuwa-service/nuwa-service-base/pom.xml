@@ -11,15 +11,14 @@
 
     <artifactId>nuwa-service-base</artifactId>
     <name>${project.artifactId}</name>
-    <version>${project.parent.version}</version>
     <packaging>jar</packaging>
 
     <dependencies>
         <!-- nuwa-service-system 的fegin公共调用方法 -->
         <dependency>
             <groupId>com.study</groupId>
-            <artifactId>nuwa-service-system-api</artifactId>
+            <artifactId>nuwa-service-system-client</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
-
 </project>

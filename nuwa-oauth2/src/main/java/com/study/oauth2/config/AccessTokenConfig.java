@@ -1,6 +1,6 @@
 package com.study.oauth2.config;
 
-import com.study.oauth2.service.NuwaUserDetails;
+import com.study.oauth2.domain.NuwaUserDetails;
 import com.study.platform.base.constant.TokenConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -1,12 +1,13 @@
 package com.study.oauth2.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.study.oauth2.domain.NuwaUserDetails;
 import com.study.platform.base.constant.AuthConstant;
 import com.study.platform.base.constant.NuwaConstant;
 import com.study.platform.base.domain.NuwaUser;
 import com.study.platform.base.enums.ResultCode;
 import com.study.platform.base.result.Result;
-import com.study.service.system.api.feign.IUserFeign;
+import com.study.service.system.client.fegin.IUserFeign;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +42,6 @@ public class NuwaUserDetailsServiceImpl implements UserDetailsService {
     // 密码最大尝试次数
     @Value("${system.maxTryTimes:5}")
     private int maxTryTimes;
-
-    // 不需要验证码登录的最大尝试次数
-    @Value("${system.maxNonCaptchaTimes:3}")
-    private int maxNonCaptchaTimes;
 
     private final IUserFeign userFeign;
 

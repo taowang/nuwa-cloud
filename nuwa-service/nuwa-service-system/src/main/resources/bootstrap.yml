@@ -13,6 +13,11 @@ spring:
         prefix: nuwa-service-system
         group: DEFAULT_GROUP
         enabled: true
+        shared-configs:
+          ## openfeign的配置
+          - dataId: nuwa-share-feign.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 swagger:
   enabled: true
   groupName: nuwa-service-system

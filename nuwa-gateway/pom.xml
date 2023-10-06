@@ -21,15 +21,9 @@
             <groupId>com.study</groupId>
             <artifactId>nuwa-platform-base</artifactId>
         </dependency>
-        <!--    Nacos服务注册发现   -->
         <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
-        </dependency>
-        <!--    Nacos 分布式配置     -->
-        <dependency>
-            <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+            <groupId>com.study</groupId>
+            <artifactId>nuwa-platform-nacos</artifactId>
         </dependency>
         <!-- nuwa cache自定义扩展 -->
         <dependency>
@@ -45,7 +39,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>

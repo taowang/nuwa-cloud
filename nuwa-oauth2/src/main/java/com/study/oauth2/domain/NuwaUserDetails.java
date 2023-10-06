@@ -1,4 +1,4 @@
-package com.study.oauth2.service;
+package com.study.oauth2.domain;
 
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;

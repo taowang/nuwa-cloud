@@ -13,7 +13,6 @@
         <module>nuwa-gateway</module>
         <module>nuwa-plugin</module>
         <module>nuwa-service</module>
-        <module>nuwa-service-api</module>
         <module>nuwa-service-client</module>
         <module>nuwa-oauth2</module>
     </modules>

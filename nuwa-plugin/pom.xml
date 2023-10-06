@@ -12,15 +12,6 @@
     <description>(第三方功能扩展)工程模块</description>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>nuwa-code-generator</module>
-    </modules>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <!-- nuwa Spring Boot自定义及扩展 -->
         <dependency>

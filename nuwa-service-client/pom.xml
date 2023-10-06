@@ -12,6 +12,8 @@
     <artifactId>nuwa-service-client</artifactId>
     <name>${project.artifactId}</name>
     <packaging>pom</packaging>
+    <description>业务逻辑处理统一封装对外提供服务的api接口</description>
+
     <modules>
         <module>nuwa-service-system-client</module>
     </modules>
@@ -33,4 +35,17 @@
             <artifactId>nuwa-platform-swagger</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!--client模块不打可执行的jar包，打普通jar包即可-->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

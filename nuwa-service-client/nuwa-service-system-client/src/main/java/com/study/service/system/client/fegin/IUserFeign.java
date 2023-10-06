@@ -3,6 +3,7 @@ package com.study.service.system.client.fegin;
 
 import com.study.platform.base.result.Result;
 import com.study.service.system.client.dto.UserAddDTO;
+import com.study.service.system.client.fegin.fallback.SystemApiFeignFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,7 @@ import java.util.List;
  * 添加contextId用于区分相同name的client，否则会报错
  * @author GitEgg
  */
-@FeignClient(name = "nuwa-service-system", contextId = "UserClient")
+@FeignClient(value = "nuwa-service-system", contextId = "UserClient", fallback = SystemApiFeignFallback.class)
 public interface IUserFeign {
     
     /**

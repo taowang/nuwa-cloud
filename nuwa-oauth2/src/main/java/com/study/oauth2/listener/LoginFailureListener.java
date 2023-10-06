@@ -1,6 +1,6 @@
 package com.study.oauth2.listener;
 
-import com.study.oauth2.service.NuwaUserDetails;
+import com.study.oauth2.domain.NuwaUserDetails;
 import com.study.platform.base.constant.AuthConstant;
 import com.study.platform.base.constant.NuwaConstant;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 

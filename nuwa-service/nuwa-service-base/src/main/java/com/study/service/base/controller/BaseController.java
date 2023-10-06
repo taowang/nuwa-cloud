@@ -1,8 +1,8 @@
 package com.study.service.base.controller;
 
 import com.study.platform.base.result.Result;
-import com.study.service.system.api.dto.ApiSystemDTO;
-import com.study.service.system.api.feign.ISystemFeign;
+import com.study.service.system.client.dto.ApiSystemDTO;
+import com.study.service.system.client.fegin.ISystemFeign;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
