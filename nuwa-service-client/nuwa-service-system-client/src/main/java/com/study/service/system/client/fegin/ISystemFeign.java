@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(value = "nuwa-service-system", contextId = "SystemClient", fallback = SystemApiFeignFallback.class)
+@FeignClient(name = "nuwa-service-system", contextId = "SystemClient", fallback = SystemApiFeignFallback.class)
 public interface ISystemFeign {
 
     /**

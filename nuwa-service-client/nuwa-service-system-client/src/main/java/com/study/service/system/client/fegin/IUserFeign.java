@@ -16,7 +16,7 @@ import java.util.List;
  * 添加contextId用于区分相同name的client，否则会报错
  * @author GitEgg
  */
-@FeignClient(value = "nuwa-service-system", contextId = "UserClient", fallback = SystemApiFeignFallback.class)
+@FeignClient(name = "nuwa-service-system", contextId = "UserClient", fallback = SystemApiFeignFallback.class)
 public interface IUserFeign {
     
     /**

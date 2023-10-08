@@ -1,6 +1,6 @@
-server:
-  port: 18002
 spring:
+  profiles:
+    active: dev
   application:
     name: nuwa-service-system
   cloud:

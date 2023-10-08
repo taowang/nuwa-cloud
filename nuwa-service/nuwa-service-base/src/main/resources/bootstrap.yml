@@ -1,6 +1,6 @@
-server:
-  port: 18001
 spring:
+  profiles:
+    active: dev
   application:
     name: nuwa-service-base
   cloud:
@@ -9,10 +9,24 @@ spring:
         server-addr: 127.0.0.1:8848
       config:
         server-addr: 127.0.0.1:8848
+        namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
+        group: SERVICE_GROUP
         file-extension: yaml
-        prefix: nuwa-service-system
-        group: DEFAULT_GROUP
+        prefix: nuwa-service-base
         enabled: true
+        shared-configs:
+          - dataId: nuwa-share-feign.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-database.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-mybtis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-tenant.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 swagger:
   enabled: true
   groupName: nuwa-service-base
