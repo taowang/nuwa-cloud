@@ -4,20 +4,17 @@ import cn.hutool.core.util.StrUtil;
 import com.nimbusds.jose.JWSObject;
 import com.study.platform.base.constant.AuthConstant;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
+import java.net.InetSocketAddress;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.HashMap;
@@ -25,6 +22,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 /**
+ * 全局过滤器
  * 将登录用户的JWT转化成用户信息的全局过滤器
  */
 @Slf4j
@@ -63,6 +61,9 @@ public class GlobalAuthenticationFilter implements GlobalFilter, Ordered {
 
         ServerHttpRequest request = exchange.getRequest().mutate().headers(httpHeaders).build();
         exchange = exchange.mutate().request(request).build();
+        String path = request.getPath().pathWithinApplication().value();
+        InetSocketAddress remoteAddress = request.getRemoteAddress();
+        log.info("请求路径:{},远程IP地址:{}", path, remoteAddress);
         return chain.filter(exchange);
     }
 

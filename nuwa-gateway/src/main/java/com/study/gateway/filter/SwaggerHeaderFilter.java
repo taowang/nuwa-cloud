@@ -7,6 +7,10 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
+/**
+ * 名称必须是xxxGatewayFilterFactory形式
+ * todo:模拟授权的验证，具体逻辑根据业务完善
+ */
 @Component
 public class SwaggerHeaderFilter extends AbstractGatewayFilterFactory {
     private static final String HEADER_NAME = "X-Forwarded-Prefix";

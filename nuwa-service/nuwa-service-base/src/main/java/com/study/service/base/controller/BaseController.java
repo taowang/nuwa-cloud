@@ -1,12 +1,14 @@
 package com.study.service.base.controller;
 
 import com.study.platform.base.result.Result;
+import com.study.platform.cloud.aspect.AvoidRepeatableCommit;
 import com.study.service.system.client.dto.ApiSystemDTO;
 import com.study.service.system.client.fegin.ISystemFeign;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,9 @@ import javax.validation.Valid;
 @Api(tags = "nuwa-base")
 @RefreshScope
 public class BaseController {
+
+    @Value("${server.port}")
+    private Integer serverPort;
 
     private final ISystemFeign systemFeign;
 
@@ -36,7 +41,16 @@ public class BaseController {
     @PostMapping(value = "api/ribbon")
     @ApiOperation(value = "Ribbon调用测试接口")
     public Result<Object> testRibbon() {
-        return Result.data(systemFeign.testRibbon());
+        return Result.data("现在访问的服务端口是:" + serverPort);
+        //return Result.data(systemFeign.testRibbon());
+    }
+
+    @AvoidRepeatableCommit
+    @ApiOperation("添加文章")
+    @PostMapping("api/add")
+    public Result<Void> add() {
+        System.err.println("添加文章" + "=======================Tony");
+        return Result.success();
     }
 
 }
