@@ -5,21 +5,18 @@ spring:
     name: nuwa-oauth2
   cloud:
     nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
       config:
         server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
         namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
-        group: OAUTH_GROUP
+        group: DEFAULT_GROUP
         file-extension: yaml
         prefix: nuwa-service-oauth2
         enabled: true
         # 用于共享的配置文件, List集合, 可以配置多个
         shared-configs:
-            # dataId: 配置文件的dataId，必须带有后缀
-          - dataId: nuwa-share-database.yaml
-            group: DEFAULT_GROUP
-            # refresh: 指定是否能够动态刷新，默认是false
+          - dataId: nuwa-share-nacos-registry.yaml
             refresh: true
           - dataId: nuwa-share-mybtis.yaml
             group: DEFAULT_GROUP
@@ -32,10 +29,10 @@ spring:
             refresh: true
 #        # 常规配置文件
 #        # 优先级大于 shared-configs，在 shared-configs 之后加载
-#        extension-configs:
-#          - dataId: nuwa-share-database.yaml
-#            group: DEFAULT_GROUP
-#            refresh: true
+        extension-configs:
+          - dataId: nuwa-share-database.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 logging:
   level:
     com.study.service.system.mapper: debug

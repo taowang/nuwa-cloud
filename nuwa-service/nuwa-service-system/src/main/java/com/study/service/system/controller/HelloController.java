@@ -1,13 +1,13 @@
 package com.study.service.system.controller;
 
+import com.study.platform.base.result.Result;
+import com.study.platform.cloud.aspect.AvoidRepeatableCommit;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.*;
 
 /**
  * 测试接口
@@ -22,5 +22,12 @@ public class HelloController {
     @GetMapping("/mgr")
     public String hello() {
         return "Hello World.";
+    }
+
+    @AvoidRepeatableCommit
+    @PostMapping("/duplicateSubmit")
+    @ApiOperation(value = "防止重复提交")
+    public Result<String> duplicateSubmit() {
+        return Result.data("Success");
     }
 }

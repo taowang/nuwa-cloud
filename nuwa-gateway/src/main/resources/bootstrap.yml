@@ -3,14 +3,31 @@ spring:
     active: dev
   application:
     name: nuwa-service-gateway
+#  main:
+#    banner-mode: off
+#    lazy-initialization: true
   cloud:
     nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
       config:
         server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
         namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
-        group: GATEWAY_GROUP
+        group: DEFAULT_GROUP
         file-extension: yaml
         prefix: nuwa-service-gateway
         enabled: true
+        shared-configs:
+          - dataId: nuwa-share-nacos-registry.yaml
+            refresh: true
+          - dataId: nuwa-share-sentinel.yaml
+            refresh: true
+          - dataId: nuwa-share-redis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+
+swagger:
+  enabled: false
+  groupName: nuwa-service-gateway
+  basePackage: com.study.gateway
+  pathMapping: nuwa-service-gateway

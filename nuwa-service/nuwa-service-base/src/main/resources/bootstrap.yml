@@ -27,6 +27,9 @@ spring:
           - dataId: nuwa-share-tenant.yaml
             group: DEFAULT_GROUP
             refresh: true
+          - dataId: nuwa-share-redis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 swagger:
   enabled: true
   groupName: nuwa-service-base

@@ -5,19 +5,34 @@ spring:
     name: nuwa-service-system
   cloud:
     nacos:
-      discovery:
-        server-addr: 127.0.0.1:8848
       config:
         server-addr: 127.0.0.1:8848
-        file-extension: yaml
+        username: nacos
+        password: nacos
+        namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
         prefix: nuwa-service-system
+        file-extension: yaml
         group: DEFAULT_GROUP
         enabled: true
         shared-configs:
-          ## openfeign的配置
+          - dataId: nuwa-share-nacos-registry.yaml
+            refresh: true
           - dataId: nuwa-share-feign.yaml
             group: DEFAULT_GROUP
             refresh: true
+          - dataId: nuwa-share-database.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-mybtis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-tenant.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+          - dataId: nuwa-share-redis.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+
 swagger:
   enabled: true
   groupName: nuwa-service-system
