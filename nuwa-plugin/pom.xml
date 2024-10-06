@@ -4,38 +4,41 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>nuwa-cloud</artifactId>
-        <groupId>com.study</groupId>
+        <groupId>com.study.nuwa</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nuwa-plugin</artifactId>
     <description>(第三方功能扩展)工程模块</description>
+    <modules>
+        <module>nuwa-admin-monitor</module>
+    </modules>
     <packaging>pom</packaging>
 
     <dependencies>
         <!-- nuwa Spring Boot自定义及扩展 -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-boot</artifactId>
         </dependency>
         <!-- nuwa Spring Cloud自定义及扩展 -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-cloud</artifactId>
         </dependency>
         <!-- nuwa数据库驱动及连接池 -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-db</artifactId>
         </dependency>
         <!-- nuwa mybatis-plus -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-mybatis</artifactId>
         </dependency>
         <!-- nuwa swagger2-knife4j -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-swagger</artifactId>
         </dependency>
         <!-- spring boot web核心包 -->
@@ -50,9 +53,8 @@
         </dependency>
         <!-- nuwa cache自定义扩展 -->
         <dependency>
-            <groupId>com.study</groupId>
-            <artifactId>nuwa-plateform-redis</artifactId>
-            <version>${nuwa.project.version}</version>
+            <groupId>com.study.nuwa</groupId>
+            <artifactId>nuwa-platform-redis</artifactId>
         </dependency>
     </dependencies>
 

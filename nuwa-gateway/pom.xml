@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>nuwa-cloud</artifactId>
-        <groupId>com.study</groupId>
+        <groupId>com.study.nuwa</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,20 +13,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-base</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-nacos</artifactId>
         </dependency>
         <!-- nuwa cache自定义扩展 -->
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-cache</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.study</groupId>
+            <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-oauth2</artifactId>
         </dependency>
         <!--    Gateway依赖    -->
