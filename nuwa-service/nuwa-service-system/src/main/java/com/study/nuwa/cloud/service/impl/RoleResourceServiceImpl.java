@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class RoleResourceServiceImpl extends ServiceImpl<RoleResourceMapper, RoleResource>
         implements IRoleResourceService {
 

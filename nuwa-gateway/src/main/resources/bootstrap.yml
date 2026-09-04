@@ -1,6 +1,12 @@
 spring:
   profiles:
     active: dev
+  security:
+    # # 启用SpringBootAdmin时，健康检查权限校验，不使用SpringBootAdmin此处可省略
+    user:
+      name: user
+      password: password
+      roles: ACTUATOR_ADMIN
   application:
     name: nuwa-service-gateway
 #  main:
@@ -25,9 +31,12 @@ spring:
           - dataId: nuwa-share-redis.yaml
             group: DEFAULT_GROUP
             refresh: true
+          - dataId: nuwa-share-actuator.yaml
+            group: DEFAULT_GROUP
+            refresh: true
 
 swagger:
   enabled: false
   groupName: nuwa-service-gateway
-  basePackage: com.study.gateway
+  basePackage: com.study.nuwa.cloud
   pathMapping: nuwa-service-gateway

@@ -1,8 +1,7 @@
 
 package com.study.nuwa.cloud.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,84 +16,84 @@ import java.util.List;
  * @since 2019-05-26
  */
 @Data
-@ApiModel(value = "QueryUser对象", description = "用户查询")
+@Schema(description = "QueryUser对象")
 public class QueryUserDTO implements Serializable
 {
     
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "租户id")
+    @Schema(description = "租户id")
     private Long tenantId;
 
-    @ApiModelProperty(value = "账号")
+    @Schema(description = "账号")
     private String account;
 
-    @ApiModelProperty(value = "昵称")
+    @Schema(description = "昵称")
     private String nickname;
 
-    @ApiModelProperty(value = "姓名")
+    @Schema(description = "姓名")
     private String realName;
 
-    @ApiModelProperty(value = "1 : 男，0 : 女， 2: 未知")
+    @Schema(description = "1 : 男，0 : 女， 2: 未知")
     private String gender;
 
-    @ApiModelProperty(value = "邮箱")
+    @Schema(description = "邮箱")
     private String email;
 
-    @ApiModelProperty(value = "手机号码")
+    @Schema(description = "手机号码")
     private String mobile;
 
-    @ApiModelProperty(value = "密码")
+    @Schema(description = "密码")
     private String password;
 
-    @ApiModelProperty(value = "用户状态 '0'禁用,'1' 启用, '2' 密码过期或初次未修改")
+    @Schema(description = "用户状态 '0'禁用,'1' 启用, '2' 密码过期或初次未修改")
     private Integer status;
 
-    @ApiModelProperty(value = "头像图片地址")
+    @Schema(description = "头像图片地址")
     private String avatar;
 
-    @ApiModelProperty(value = "国家")
+    @Schema(description = "国家")
     private String country;
 
-    @ApiModelProperty(value = "省")
+    @Schema(description = "省")
     private String province;
 
-    @ApiModelProperty(value = "市")
+    @Schema(description = "市")
     private String city;
 
-    @ApiModelProperty(value = "区")
+    @Schema(description = "区")
     private String area;
     
     /**
      * vue级联选择
      */
-    @ApiModelProperty(value = "地址数组")
+    @Schema(description = "地址数组")
     private List<String> areas;
 
-    @ApiModelProperty(value = "角色id")
+    @Schema(description = "角色id")
     private Long roleId;
 
-    @ApiModelProperty(value = "开始时间")
+    @Schema(description = "开始时间")
     private String beginDateTime;
 
-    @ApiModelProperty(value = "结束时间")
+    @Schema(description = "结束时间")
     private String endDateTime;
 
-    @ApiModelProperty(value = "组织机构id")
+    @Schema(description = "组织机构id")
     private Long organizationId;
     
-    @ApiModelProperty(value = "通过批量查询用户")
+    @Schema(description = "通过批量查询用户")
     private List<Long> userIds;
     
-    @ApiModelProperty(value = "角色id批量查询用户")
+    @Schema(description = "角色id批量查询用户")
     private List<Long> roleIds;
     
-    @ApiModelProperty(value = "角色key批量查询用户")
+    @Schema(description = "角色key批量查询用户")
     private List<String> roleKeys;
     
-    @ApiModelProperty(value = "机构id批量查询用户")
+    @Schema(description = "机构id批量查询用户")
     private List<Long> organizationIds;
 }

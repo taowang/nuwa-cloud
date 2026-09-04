@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.study.nuwa.platform.entity.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -19,20 +18,20 @@ import lombok.Data;
  */
 @Data
 @TableName("t_sys_user_role")
-@ApiModel(value="UserRole对象", description="用户和角色关联表")
+@Schema(description ="UserRole对象")
 public class UserRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(description = "用户id")
     @TableField("user_id")
     private Long userId;
 
-    @ApiModelProperty(value = "角色id")
+    @Schema(description = "角色id")
     @TableField("role_id")
     private Long roleId;
 }

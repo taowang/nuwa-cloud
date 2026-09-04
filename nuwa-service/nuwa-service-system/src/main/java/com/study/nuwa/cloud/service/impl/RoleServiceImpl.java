@@ -35,7 +35,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@Setter(onMethod_ = {@Autowired})
+@Setter
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     private RoleMapper roleMapper;

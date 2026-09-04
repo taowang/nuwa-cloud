@@ -10,6 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nuwa-plugin</artifactId>
     <description>(第三方功能扩展)工程模块</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <modules>
         <module>nuwa-admin-monitor</module>
     </modules>

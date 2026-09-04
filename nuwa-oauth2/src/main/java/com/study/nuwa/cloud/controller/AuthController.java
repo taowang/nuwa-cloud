@@ -8,7 +8,7 @@ import com.study.nuwa.cloud.util.JwtUtils;
 import com.study.platform.constant.AuthConstant;
 import com.study.platform.constant.NuwaConstant;
 import com.study.platform.result.Result;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.security.KeyPair;
 import java.security.Principal;
 import java.security.interfaces.RSAPublicKey;
@@ -61,14 +61,14 @@ public class AuthController {
      * @param model
      * @return
      */
-    @ApiOperation(value = "表单登录跳转页面")
+    @Operation(summary = "表单登录跳转页面")
     @GetMapping("/login")
     public String loginPage(Model model) {
         //返回跳转页面
         return "oauth-login";
     }
 
-    @ApiOperation(value = "处理授权异常的跳转页面")
+    @Operation(summary = "处理授权异常的跳转页面")
     @GetMapping("/error")
     public String error(Model model) {
         return "oauth-error";

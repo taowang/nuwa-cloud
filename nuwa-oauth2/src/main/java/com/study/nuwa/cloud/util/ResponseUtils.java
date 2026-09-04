@@ -3,8 +3,8 @@ package com.study.nuwa.cloud.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.platform.result.Result;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ResponseUtils {

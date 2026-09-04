@@ -10,6 +10,18 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>nuwa-gateway</artifactId>
     <description>网关</description>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
@@ -20,27 +32,57 @@
             <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-nacos</artifactId>
         </dependency>
+        <!-- 网关的 AuthUrlWhiteListProperties 等配置类位于此模块 -->
+        <dependency>
+            <groupId>com.study.nuwa</groupId>
+            <artifactId>nuwa-platform-cloud</artifactId>
+        </dependency>
         <!-- nuwa cache自定义扩展 -->
         <dependency>
             <groupId>com.study.nuwa</groupId>
             <artifactId>nuwa-platform-cache</artifactId>
         </dependency>
+        <!--
+            nuwa-platform-oauth2 暂时下线（Spring Security OAuth 老项目已被 Spring Authorization Server 取代），
+            网关暂不需要直接依赖，等 oauth2 模块升级后恢复。
+        -->
+        <!--    Spring Security（网关鉴权：WebFlux 模式）    -->
         <dependency>
-            <groupId>com.study.nuwa</groupId>
-            <artifactId>nuwa-platform-oauth2</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-resource-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
+        </dependency>
+        <!-- Nimbus JOSE+JWT：JWT 解码/校验 -->
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+        </dependency>
+        <!-- json-smart：nimbus-jose-jwt 的传递依赖，网关直接用 net.minidev.json 时显式引入 -->
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
         </dependency>
         <!--    Gateway依赖    -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
+        <!--    springdoc-openapi (WebFlux) - 网关层 API 文档聚合    -->
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
         </dependency>
+        <!-- knife4j 4.x 网关侧增强（WebFlux 命名变体） -->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-ui</artifactId>
+            <artifactId>knife4j-openapi3-webflux-jakarta-spring-boot-starter</artifactId>
         </dependency>
 
         <!--    Sentinel:网关层流量整形 start  -->

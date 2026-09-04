@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.study.nuwa.platform.entity.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -19,20 +18,20 @@ import lombok.Data;
  */
 @Data
 @TableName("t_sys_organization_user")
-@ApiModel(value = "OrganizationUser对象", description = "OrganizationUser对象")
+@Schema(description = "OrganizationUser对象")
 public class OrganizationUser extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "机构id")
+    @Schema(description = "机构id")
     @TableField("organization_id")
     private Long organizationId;
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(description = "用户id")
     @TableField("user_id")
     private Long userId;
 

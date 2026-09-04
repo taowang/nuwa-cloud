@@ -1,8 +1,7 @@
 package com.study.nuwa.cloud.dto;
 
 import com.study.nuwa.platform.entity.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,28 +15,28 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value="DataPermissionUser对象", description="")
+@Schema(description ="DataPermissionUser对象")
 public class QueryDataPermissionUserDTO extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     private Long id;
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(description = "用户id")
     private Long userId;
 
-    @ApiModelProperty(value = "机构id")
+    @Schema(description = "机构id")
     private Long organizationId;
 
-    @ApiModelProperty(value = "状态 0禁用，1 启用,")
+    @Schema(description = "状态 0禁用，1 启用,")
     private Integer status;
 
 
-    @ApiModelProperty(value = "开始时间")
+    @Schema(description = "开始时间")
     private String beginDateTime;
 
-    @ApiModelProperty(value = "结束时间")
+    @Schema(description = "结束时间")
     private String endDateTime;
 
 }

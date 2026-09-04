@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: nuwa-admin-monitor
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+        metadata:
+          username: nacos
+          password: nacos
+      config:
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+        namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
+        group: DEFAULT_GROUP
+        prefix: nuwa-admin-monitor
+        file-extension: yaml
+        enabled: true
+        extension-configs:
+          - dataId: nuwa-share-nacos-registry.yaml
+            refresh: true
+          - dataId: nuwa-share-actuator.yaml
+            refresh: true
+          - dataId: nuwa-share-database.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+swagger:
+  enabled: true
+  groupName: nuwa-service-base
+  basePackage: com.study.service.base
+  pathMapping: nuwa-service-base
+
+server:
+  servlet:
+    context-path: /${spring.application.name}

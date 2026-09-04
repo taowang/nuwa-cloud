@@ -4,7 +4,6 @@ import com.study.nuwa.cloud.service.IDataPermissionRoleService;
 import com.study.nuwa.cloud.service.IRoleResourceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Component;
  * 容器启动完成加载资源权限数据到缓存
  */
 @Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 @Component
 public class InitSystemCacheRunner implements CommandLineRunner {
 

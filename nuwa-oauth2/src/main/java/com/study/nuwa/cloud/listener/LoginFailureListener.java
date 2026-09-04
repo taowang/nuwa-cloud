@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  **/
 @Slf4j
 //@Component
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class LoginFailureListener implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
     private static Logger LOGGER = LoggerFactory.getLogger(LoginFailureListener.class);
 

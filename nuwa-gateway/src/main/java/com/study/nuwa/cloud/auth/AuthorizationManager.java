@@ -6,10 +6,7 @@ import com.nimbusds.jose.Payload;
 import com.study.platform.constant.AuthConstant;
 import com.study.platform.constant.TokenConstant;
 import com.study.nuwa.platform.props.AuthUrlWhiteListProperties;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
@@ -18,7 +15,7 @@ import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -32,16 +29,25 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 网关鉴权管理器，用于自定义权限校验
+ * 网关鉴权管理器，用于自定义权限校验。
+ *
+ * <p>说明：本次升级期间 lombok 在 nuwa 项目的 maven 编译时未生效（详见 UPGRADE.md），
+ * 这里把 {@code @Slf4j} / {@code @RequiredArgsConstructor} 改为手写 logger 和显式构造器。
  */
-@Slf4j
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 @Component
 public class AuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
+
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AuthorizationManager.class);
 
     private final RedisTemplate redisTemplate;
 
     private final AuthUrlWhiteListProperties authUrlWhiteListProperties;
+
+    @Autowired
+    public AuthorizationManager(RedisTemplate redisTemplate, AuthUrlWhiteListProperties authUrlWhiteListProperties) {
+        this.redisTemplate = redisTemplate;
+        this.authUrlWhiteListProperties = authUrlWhiteListProperties;
+    }
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
@@ -67,11 +73,12 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         try {
             JWSObject jwsObject = JWSObject.parse(realToken);
             Payload payload = jwsObject.getPayload();
-            JSONObject jsonObject = payload.toJSONObject();
-            String jti = jsonObject.getAsString(TokenConstant.JTI);
+            // nimbus-jose-jwt 9.x：toJSONObject() 返回 Map<String, Object>，不再是 net.minidev.json.JSONObject
+            Map<String, Object> jsonObject = payload.toJSONObject();
+            String jti = jsonObject.get(TokenConstant.JTI) == null ? null : String.valueOf(jsonObject.get(TokenConstant.JTI));
             String blackListToken = (String) redisTemplate.opsForValue().get(AuthConstant.TOKEN_BLACKLIST + jti);
             if (!org.springframework.util.StringUtils.isEmpty(blackListToken)) {
-                return Mono.error(new InvalidTokenException("无效的token！"));
+                return Mono.error(new InvalidBearerTokenException("无效的token！"));
             }
         } catch (ParseException e) {
             log.error("获取token黑名单时发生错误：{}", e);

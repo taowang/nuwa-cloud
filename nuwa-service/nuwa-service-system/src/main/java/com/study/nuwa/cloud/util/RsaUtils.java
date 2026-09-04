@@ -140,12 +140,12 @@ public class RsaUtils {
      * @return 解密后的文本
      */
     public static String decryptByPublicKey(String publicKeyString, String text) throws Exception {
-        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(Base64.decodeBase64(publicKeyString));
+        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(java.util.Base64.getDecoder().decode(publicKeyString));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PublicKey publicKey = keyFactory.generatePublic(x509EncodedKeySpec);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
-        byte[] result = cipher.doFinal(Base64.decodeBase64(text));
+        byte[] result = cipher.doFinal(java.util.Base64.getDecoder().decode(text));
         return new String(result);
     }
 
@@ -157,13 +157,13 @@ public class RsaUtils {
      * @return 加密后的文本
      */
     public static String encryptByPrivateKey(String privateKeyString, String text) throws Exception {
-        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(Base64.decodeBase64(privateKeyString));
+        PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(java.util.Base64.getDecoder().decode(privateKeyString));
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
         PrivateKey privateKey = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
         byte[] result = cipher.doFinal(text.getBytes());
-        return Base64.encodeBase64String(result);
+        return java.util.Base64.getEncoder().encodeToString(result);
     }
 
     /**
@@ -176,7 +176,7 @@ public class RsaUtils {
         PrivateKey privateKey = RsaUtils.getPrivateKey();
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] result = cipher.doFinal(Base64.decodeBase64(text));
+        byte[] result = cipher.doFinal(java.util.Base64.getDecoder().decode(text));
         return new String(result);
     }
 
@@ -191,7 +191,7 @@ public class RsaUtils {
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] result = cipher.doFinal(text.getBytes());
-        return Base64.encodeBase64String(result);
+        return java.util.Base64.getEncoder().encodeToString(result);
     }
 
     /**
@@ -205,8 +205,8 @@ public class RsaUtils {
         KeyPair keyPair = keyPairGenerator.generateKeyPair();
         RSAPublicKey rsaPublicKey = (RSAPublicKey) keyPair.getPublic();
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) keyPair.getPrivate();
-        String publicKeyString = Base64.encodeBase64String(rsaPublicKey.getEncoded());
-        String privateKeyString = Base64.encodeBase64String(rsaPrivateKey.getEncoded());
+        String publicKeyString = java.util.Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded());
+        String privateKeyString = java.util.Base64.getEncoder().encodeToString(rsaPrivateKey.getEncoded());
         return new RsaUtils.RsaKeyPair(publicKeyString, privateKeyString);
     }
 

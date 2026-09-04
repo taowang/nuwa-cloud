@@ -1,8 +1,7 @@
 
 package com.study.nuwa.cloud.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,16 +16,16 @@ import java.util.List;
  * @since 2019-05-26
  */
 @Data
-@ApiModel(value = "QueryUserResourceDTO", description = "查询用户权限")
+@Schema(description = "QueryUserResourceDTO")
 public class QueryUserResourceDTO implements Serializable
 {
     
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(description = "用户id")
     private Long userId;
 
-    @ApiModelProperty(value = "资源权限类型")
+    @Schema(description = "资源权限类型")
     private List<String> resourceTypeList;
 
 }

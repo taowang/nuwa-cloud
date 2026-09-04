@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> implements IUserRoleService {
 
     private final IRoleService roleService;

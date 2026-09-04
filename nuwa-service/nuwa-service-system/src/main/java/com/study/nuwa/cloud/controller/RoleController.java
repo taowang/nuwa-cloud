@@ -10,10 +10,11 @@ import com.study.nuwa.cloud.entity.Role;
 import com.study.nuwa.cloud.entity.RoleResource;
 import com.study.nuwa.cloud.service.IRoleResourceService;
 import com.study.nuwa.cloud.service.IRoleService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -31,8 +32,8 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "role")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Api(value = "RoleController|角色相关的前端控制器")
+@RequiredArgsConstructor()
+@Tag(name = "RoleController|角色相关的前端控制器")
 @RefreshScope
 public class RoleController {
 
@@ -44,7 +45,7 @@ public class RoleController {
      * 查询角色列表
      */
     @GetMapping("/list")
-    @ApiOperation(value = "查询角色列表")
+    @Operation(summary = "查询角色列表")
     public PageResult<Role> list(Role role, Page<Role> page) {
         Page<Role> pageRole = roleService.selectRoleList(page, role);
         return PageResult.data(pageRole.getTotal(), pageRole.getRecords());
@@ -54,7 +55,7 @@ public class RoleController {
      * 添加角色
      */
     @PostMapping("/create")
-    @ApiOperation(value = "添加角色")
+    @Operation(summary = "添加角色")
     public Result<?> create(@RequestBody CreateRoleDTO role) {
         boolean result = roleService.createRole(role);
         return Result.result(result);
@@ -64,7 +65,7 @@ public class RoleController {
      * 修改角色
      */
     @PostMapping("/update")
-    @ApiOperation(value = "更新角色")
+    @Operation(summary = "更新角色")
     public Result<?> update(@RequestBody UpdateRoleDTO role) {
         boolean result = roleService.updateRole(role);
         return Result.result(result);
@@ -74,8 +75,8 @@ public class RoleController {
      * 删除角色
      */
     @PostMapping("/delete/{roleId}")
-    @ApiOperation(value = "删除角色")
-    @ApiImplicitParam(paramType = "path", name = "roleId", value = "角色ID", required = true, dataType = "Long")
+    @Operation(summary = "删除角色")
+    @Parameter(name = "roleId", description = "角色ID", in = ParameterIn.PATH)
     public Result<?> delete(@PathVariable("roleId") Long roleId) {
         if (null == roleId) {
             return Result.error("ID不能为空");
@@ -88,8 +89,8 @@ public class RoleController {
      * 批量删除角色
      */
     @PostMapping("/batch/delete")
-    @ApiOperation(value = "批量删除角色")
-    @ApiImplicitParam(name = "roleIds", value = "角色ID列表", required = true, dataType = "List")
+    @Operation(summary = "批量删除角色")
+    @Parameter(name = "roleIds", description = "角色ID列表")
     public Result<?> batchDelete(@RequestBody List<Long> roleIds) {
         if (CollectionUtils.isEmpty(roleIds)) {
             return Result.error("角色ID列表不能为空");
@@ -102,11 +103,10 @@ public class RoleController {
      * 修改角色状态
      */
     @PostMapping("/status/{roleId}/{roleStatus}")
-    @ApiOperation(value = "修改角色状态")
-    @ApiImplicitParams({
-        @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "Long", paramType = "path"),
-        @ApiImplicitParam(name = "roleStatus", value = "角色状态", required = true, dataType = "Integer",
-            paramType = "path")})
+    @Operation(summary = "修改角色状态")
+    @Parameters({
+        @Parameter(name = "roleId", description = "角色ID", in = ParameterIn.PATH),
+        @Parameter(name = "roleStatus", description = "角色状态", in = ParameterIn.PATH)})
     public Result<?> updateStatus(@PathVariable("roleId") Long roleId,
         @PathVariable("roleStatus") Integer roleStatus) {
         if (null == roleId || StringUtils.isEmpty(roleStatus)) {
@@ -126,8 +126,8 @@ public class RoleController {
      * @return
      */
     @GetMapping(value = "/resource/{roleId}")
-    @ApiOperation(value = "获取角色的权限资源")
-    @ApiImplicitParam(paramType = "path", name = "roleId", value = "角色ID", required = true, dataType = "Integer")
+    @Operation(summary = "获取角色的权限资源")
+    @Parameter(name = "roleId", description = "角色ID", in = ParameterIn.PATH)
     public Result<List<RoleResource>> queryRoleResource(@PathVariable("roleId") Integer roleId) {
         LambdaQueryWrapper<RoleResource> ew = new LambdaQueryWrapper<>();
         ew.eq(RoleResource::getRoleId, roleId);
@@ -141,7 +141,7 @@ public class RoleController {
      * @return
      */
     @GetMapping(value = "/all")
-    @ApiOperation(value = "查询所有角色列表")
+    @Operation(summary = "查询所有角色列表")
     public Result<List<Role>> queryAll() {
         List<Role> result = roleService.list();
         return Result.data(result);

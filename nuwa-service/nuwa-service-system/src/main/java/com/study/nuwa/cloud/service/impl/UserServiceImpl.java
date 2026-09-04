@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
 
     @Value("${system.defaultRoleId:2}")

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class OrganizationUserServiceImpl extends ServiceImpl<OrganizationUserMapper, OrganizationUser>
         implements IOrganizationUserService {
 }

@@ -7,8 +7,8 @@ import com.study.platform.annotation.auth.CurrentUser;
 import com.study.platform.domain.NuwaUser;
 import com.study.platform.exception.BusinessException;
 import com.study.platform.result.Result;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +17,12 @@ import org.springframework.data.redis.core.BoundHashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "system")
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Api(tags = "nuwa-system")
+@RequiredArgsConstructor()
+@Tag(name = "nuwa-system")
 @RefreshScope
 public class SystemController {
 
@@ -37,62 +37,62 @@ public class SystemController {
     private Integer serverPort;
 
     @GetMapping(value = "list")
-    @ApiOperation(value = "system list接口")
+    @Operation(summary = "system list接口")
     public Object list() {
         return systemService.list();
     }
 
 
     @GetMapping(value = "page")
-    @ApiOperation(value = "system page接口")
+    @Operation(summary = "system page接口")
     public Object page() {
         return systemService.page();
     }
 
     @GetMapping(value = "exception")
-    @ApiOperation(value = "自定义异常及返回测试接口")
+    @Operation(summary = "自定义异常及返回测试接口")
     public Result<String> exception() {
         return Result.data(systemService.exception());
     }
 
     @PostMapping(value = "valid")
-    @ApiOperation(value = "参数校验测试接口")
+    @Operation(summary = "参数校验测试接口")
     public Result<SystemDTO> valid(@Valid @RequestBody SystemDTO systemDTO) {
         return Result.data(systemDTO);
     }
 
     @PostMapping(value = "nacos")
-    @ApiOperation(value = "Nacos读取配置文件测试接口")
+    @Operation(summary = "Nacos读取配置文件测试接口")
     public Result<String> nacos(@CurrentUser NuwaUser currentUser) {
         System.out.println(currentUser.getAccount());
         return Result.data(nacosMaxActiveType);
     }
 
     @GetMapping(value = "api/by/id")
-    @ApiOperation(value = "Fegin Get调用测试接口")
+    @Operation(summary = "Fegin Get调用测试接口")
     public Result<Object> feginById(@RequestParam("id") String id) {
         return Result.data(systemService.list());
     }
 
     @PostMapping(value = "api/by/dto")
-    @ApiOperation(value = "Fegin Post调用测试接口")
+    @Operation(summary = "Fegin Post调用测试接口")
     public Result<Object> feginByDto(@Valid @RequestBody SystemDTO systemDTO) {
         return Result.data(systemDTO);
     }
 
     @GetMapping("/api/ribbon")
-    @ApiOperation(value = "Ribbon调用测试接口")
+    @Operation(summary = "Ribbon调用测试接口")
     public Result<String> testRibbon() {
         return Result.data("现在访问的服务端口是:" + serverPort);
     }
 
-    @ApiOperation(value = "限流测试")
+    @Operation(summary = "限流测试")
     @GetMapping(value = "sentinel/protected")
     public Result<String> sentinelProtected() {
         return Result.data("访问的是限流测试接口");
     }
 
-    @ApiOperation(value = "慢调用比例熔断策略")
+    @Operation(summary = "慢调用比例熔断策略")
     @GetMapping(value = "sentinel/slow/request/ratio")
     public Result<String> sentinelRR() {
         try {
@@ -110,7 +110,7 @@ public class SystemController {
         return Result.success("慢调用比例熔断策略");
     }
 
-    @ApiOperation(value = "异常比例/异常数量熔断策略")
+    @Operation(summary = "异常比例/异常数量熔断策略")
     @GetMapping(value = "sentinel/error/ratio")
     public Result sentinelRatio() {
         double randomNumber;
@@ -121,14 +121,14 @@ public class SystemController {
         return Result.success("异常比例/异常数量熔断策略");
     }
 
-    @ApiOperation(value = "Gateway路由转发测试")
+    @Operation(summary = "Gateway路由转发测试")
     @GetMapping(value = "gateway/forward")
     public Result gatewayForward() {
         return Result.success("gitegg-service-system测试数据");
     }
 
 
-    @ApiOperation(value = "缓存测试获取值")
+    @Operation(summary = "缓存测试获取值")
     @GetMapping(value = "redis/get")
     public Result redisGet() {
         BoundHashOperations<String, String, String> hash = template.boundHashOps("test");

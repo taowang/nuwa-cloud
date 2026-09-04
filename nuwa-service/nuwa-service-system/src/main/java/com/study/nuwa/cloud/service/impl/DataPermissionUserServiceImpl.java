@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class DataPermissionUserServiceImpl extends ServiceImpl<DataPermissionUserMapper, DataPermissionUser> implements IDataPermissionUserService {
 
     private final DataPermissionUserMapper dataPermissionUserMapper;

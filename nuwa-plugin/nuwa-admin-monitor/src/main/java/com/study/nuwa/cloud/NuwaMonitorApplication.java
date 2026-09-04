@@ -1,4 +1,4 @@
-package com.study.nuwa.cloud.monitor;
+package com.study.nuwa.cloud;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
 import org.springframework.boot.SpringApplication;

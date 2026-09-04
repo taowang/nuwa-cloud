@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class ResourceServiceImpl extends ServiceImpl<ResourceMapper, Resource> implements IResourceService {
 
     private final ResourceMapper resourceMapper;

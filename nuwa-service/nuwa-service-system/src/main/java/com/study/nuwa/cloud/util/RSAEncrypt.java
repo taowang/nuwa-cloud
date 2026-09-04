@@ -76,9 +76,9 @@ public class RSAEncrypt {
 		KeyPair keyPair = keyPairGen.generateKeyPair();
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();   // 得到私钥
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();  // 得到公钥
-		String publicKeyString = new String(Base64.encodeBase64(publicKey.getEncoded()));
+		String publicKeyString = new String(java.util.Base64.getEncoder().encodeToString(publicKey.getEncoded()));
 		// 得到私钥字符串  
-		String privateKeyString = new String(Base64.encodeBase64((privateKey.getEncoded())));  
+		String privateKeyString = new String(java.util.Base64.getEncoder().encodeToString((privateKey.getEncoded())));  
 		// 将公钥和私钥保存到Map
 		keyMap.put(0,PUBLIC_KEY);  //0表示公钥
 		keyMap.put(1,PRIVATE_KEY);  //1表示私钥
@@ -96,12 +96,12 @@ public class RSAEncrypt {
 	 */  
 	public static String encrypt( String str, String publicKey ) throws Exception{
 		//base64编码的公钥
-		byte[] decoded = Base64.decodeBase64(publicKey);
+		byte[] decoded = java.util.Base64.getDecoder().decode(publicKey);
 		RSAPublicKey pubKey = (RSAPublicKey) KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(decoded));
 		//RSA加密
 		Cipher cipher = Cipher.getInstance("RSA");
 		cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-		String outStr = Base64.encodeBase64String(cipher.doFinal(str.getBytes("UTF-8")));
+		String outStr = java.util.Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes("UTF-8")));
 		return outStr;
 	}
 
@@ -118,9 +118,9 @@ public class RSAEncrypt {
 	 */  
 	public static String decrypt(String str, String privateKey) throws Exception{
 		//64位解码加密后的字符串
-		byte[] inputByte = Base64.decodeBase64(str.getBytes("UTF-8"));
+		byte[] inputByte = java.util.Base64.getDecoder().decode(str.getBytes("UTF-8"));
 		//base64编码的私钥
-		byte[] decoded = Base64.decodeBase64(privateKey);  
+		byte[] decoded = java.util.Base64.getDecoder().decode(privateKey);  
         RSAPrivateKey priKey = (RSAPrivateKey) KeyFactory.getInstance("RSA").generatePrivate(new PKCS8EncodedKeySpec(decoded));
 		//RSA解密
 		Cipher cipher = Cipher.getInstance("RSA");

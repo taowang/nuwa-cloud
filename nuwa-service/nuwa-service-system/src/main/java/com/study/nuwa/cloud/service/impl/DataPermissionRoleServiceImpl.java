@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
+@RequiredArgsConstructor()
 public class DataPermissionRoleServiceImpl extends ServiceImpl<DataPermissionRoleMapper, DataPermissionRole> implements IDataPermissionRoleService {
 
     /**

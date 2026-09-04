@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.study.nuwa.platform.entity.BaseEntity;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -20,22 +19,22 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("t_sys_data_permission_user")
-@ApiModel(value="DataPermissionUser对象", description="")
+@Schema(description ="DataPermissionUser对象")
 public class DataPermissionUser extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @ApiModelProperty(value = "用户id")
+    @Schema(description = "用户id")
     private Long userId;
 
-    @ApiModelProperty(value = "机构id")
+    @Schema(description = "机构id")
     private Long organizationId;
 
-    @ApiModelProperty(value = "状态 0禁用，1 启用,")
+    @Schema(description = "状态 0禁用，1 启用,")
     private Integer status;
 
 

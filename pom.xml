@@ -14,14 +14,21 @@
         <module>nuwa-plugin</module>
         <module>nuwa-service</module>
         <module>nuwa-service-client</module>
-        <module>nuwa-oauth2</module>
+        <!--
+            nuwa-oauth2 临时下线：Spring Boot 3.x 已移除 Spring Security OAuth 项目
+            (spring-security-oauth2)，全部代码基于老版本 API 编写（AuthorizationServerConfigurerAdapter、
+            ResourceServerConfigurerAdapter、JdbcClientDetailsService、JwtAccessTokenConverter 等），
+            迁移目标为 Spring Authorization Server (spring-security-oauth2-authorization-server)，
+            工作量较大，需独立 PR。暂时从构建中摘掉。
+        -->
+        <!--        <module>nuwa-oauth2</module>-->
     </modules>
 
     <properties>
         <!-- jdk版本1.8 -->
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <!-- maven-compiler-plugin插件版本，Java代码编译 -->
-        <maven.plugin.version>3.8.1</maven.plugin.version>
+        <maven.plugin.version>3.11.0</maven.plugin.version>
         <!-- maven编译时指定编码UTF-8 -->
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- 项目统一字符集编码UTF-8 -->
@@ -31,17 +38,19 @@
         <!-- nuwa项目统一设置版本号 -->
         <nuwa.project.version>1.0-SNAPSHOT</nuwa.project.version>
         <!-- SpringBoot版本号 -->
-        <spring.boot.version>2.3.3.RELEASE</spring.boot.version>
+        <spring.boot.version>3.3.5</spring.boot.version>
         <!-- SpringCloud版本号 -->
-        <spring.cloud.version>Hoxton.SR8</spring.cloud.version>
+        <spring.cloud.version>2023.0.3</spring.cloud.version>
         <!-- SpringPlatform版本号 -->
         <spring.platform.version>Cairo-SR8</spring.platform.version>
         <!-- mysql数据库驱动 -->
-        <mysql.connector.version>8.0.17</mysql.connector.version>
+        <mysql.connector.version>8.4.0</mysql.connector.version>
         <!-- 数据库连接池Druid -->
-        <druid.version>1.1.23</druid.version>
+        <druid.version>1.2.23</druid.version>
         <!-- Mybatis Plus增强工具 -->
-        <mybatis.plus.version>3.4.0</mybatis.plus.version>
+        <mybatis.plus.version>3.5.9</mybatis.plus.version>
+        <!-- Lombok 版本：JDK17 需要 1.18.30+，推荐 1.18.48 解决 1.18.34 在某些 JDK17 版本的注解处理器不触发问题 -->
+        <lombok.version>1.18.48</lombok.version>
     </properties>
 
     <dependencies>
@@ -49,6 +58,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 
@@ -128,9 +138,24 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>16</source>
+                    <target>16</target>
                 </configuration>
             </plugin>
         </plugins>
