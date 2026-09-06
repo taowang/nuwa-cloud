@@ -1,2 +1,50 @@
 server:
   port: 18002
+
+# ============ 本地 dev profile 默认配置（docker 部署时作为兜底） ============
+
+tenant:
+  enable: false
+  column: tenant_id
+  exclusion-table:
+    - sys_config
+
+mybatis-plus:
+  # mapper xml 实际路径：src/main/resources/com/study/nuwa/service/system/mapper/*.xml
+  # 用 classpath* 通配全部 nuwa-cloud 与 com.study.nuwa.* 路径下的 mapper xml
+  mapper-locations: classpath*:/com/study/nuwa/**/mapper/**/*.xml,classpath*:/mapper/**/*.xml
+  type-aliases-package: com.study.**.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 5000
+            read-timeout: 5000
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: 8719
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      database: 1
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/nuwa?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    # nuwa-service-system 业务代码会读这些占位符，原本从 nacos 拉，本地/容器化时给默认兜底
+    maxActive: 20
+    initialSize: 5
+    minIdle: 5
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
