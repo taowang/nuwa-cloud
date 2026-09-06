@@ -1,2 +1,46 @@
 server:
   port: 80
+
+# ============ 本地 dev profile 默认配置（docker 部署时作为兜底） ============
+# 网关不需要 datasource/mybatis/tenant，仅 sentinel + redis + nacos discovery
+spring:
+  # Spring Cloud Gateway 是 WebFlux 的；classpath 上 nuwa-platform-swagger 通过 springdoc 拉了 webmvc，
+  # 显式声明 reactive 让 Spring Cloud Gateway 启动时不再报 SpringMvcFoundOnClasspath 警告
+  main:
+    web-application-type: reactive
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: 8719
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      database: 1
+  # JWT decoder 占位 URI（触发 Spring Security 自动配置 ReactiveJwtDecoder bean）。
+  # 真正的 token 校验交给 AuthorizationManager（Nimbus JWT 自解析）。这里只让启动通过。
+  # docker 里没有 oauth2 服务，所以 token 验证请求会被拒，但服务本身能正常起来。
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:0/jwks
+
+# 鉴权白名单兜底（来自 nuwa-share-nacos-registry.yaml，docker 里禁 nacos config 后这里给空集避免 NPE）
+oauth-list:
+  static-files: []   # 静态资源白名单
+  white-urls:        # 不需鉴权的 url
+    - /doc.html
+    - /v3/api-docs/**
+    - /webjars/**
+    - /swagger-ui/**
+    - /actuator/**
+  auth-urls: []      # 必须登录但每个角色都有的 url
+  token-urls: []     # 交给认证中心处理的 url
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -1,2 +1,41 @@
 server:
   port: 18005
+
+# ============ 本地 dev profile 默认配置（docker 部署时作为兜底） ============
+tenant:
+  enable: false
+  column: tenant_id
+  exclusion-table:
+    - sys_config
+
+spring:
+  cloud:
+    sentinel:
+      transport:
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: 8719
+
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      database: 1
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/nuwa?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+# SpringBootAdmin server 从 nacos discovery 拉取被监控实例
+  boot:
+    admin:
+      discovery:
+        enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -5,33 +5,17 @@ spring:
     name: nuwa-service-system
   cloud:
     nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:nacos:8848}
       config:
-        server-addr: 127.0.0.1:8848
+        server-addr: ${NACOS_SERVER_ADDR:nacos:8848}
         username: nacos
         password: nacos
-        namespace: ac59b1ea-e031-4aaf-a50e-2742b2f3da5f
         prefix: nuwa-service-system
         file-extension: yaml
         group: DEFAULT_GROUP
-        enabled: true
-        shared-configs:
-          - dataId: nuwa-share-nacos-registry.yaml
-            refresh: true
-          - dataId: nuwa-share-feign.yaml
-            group: DEFAULT_GROUP
-            refresh: true
-          - dataId: nuwa-share-database.yaml
-            group: DEFAULT_GROUP
-            refresh: true
-          - dataId: nuwa-share-mybtis.yaml
-            group: DEFAULT_GROUP
-            refresh: true
-          - dataId: nuwa-share-tenant.yaml
-            group: DEFAULT_GROUP
-            refresh: true
-          - dataId: nuwa-share-redis.yaml
-            group: DEFAULT_GROUP
-            refresh: true
+        enabled: false  # docker 里禁掉，避免 nacos shared-config 里的 localhost 覆盖容器网络
+        shared-configs: []
 
 swagger:
   enabled: true
