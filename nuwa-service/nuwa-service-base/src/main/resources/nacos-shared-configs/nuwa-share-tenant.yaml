@@ -1,0 +1,6 @@
+tenant:
+  # 关闭多租户拦截器（最小可启动版本，不开启多租户）
+  enable: false
+  column: tenant_id
+  exclusion-table:
+    - sys_config

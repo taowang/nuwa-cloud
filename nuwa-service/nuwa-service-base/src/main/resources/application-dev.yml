@@ -1,2 +1,47 @@
 server:
   port: 18004
+
+# ============ 本地 dev profile 默认配置 ============
+# 启用 nacos config 时，这部分作为兜底；未启用 nacos config 时这里是唯一来源。
+# 真正生产环境这些值由 nacos 上的 nuwa-share-*.yaml 提供（部署到 docker 时也会启用 nacos config）。
+
+tenant:
+  # 关闭多租户拦截器（最小可启动版本）
+  enable: false
+  column: tenant_id
+  exclusion-table:
+    - sys_config
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  type-aliases-package: com.study.**.entity
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 5000
+            read-timeout: 5000
+    sentinel:
+      transport:
+        # docker 容器内设 SENTINEL_DASHBOARD=sentinel:8858；本地默认 127.0.0.1:8858
+        dashboard: ${SENTINEL_DASHBOARD:127.0.0.1:8858}
+        port: 8719
+
+  # 覆盖 docker 容器间的 host（compose 启动时会通过环境变量再覆盖一次）
+  data:
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      database: 1
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/nuwa?useSSL=false&serverTimezone=UTC&characterEncoding=utf8&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
